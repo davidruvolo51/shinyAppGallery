@@ -1,21 +1,26 @@
-
+.container-fluid{
+    margin: 0;
+    padding: 0;
+}
 .jumbotron{
-    background: url("../images/coffee-cup-full-crpd.jpg");
-    background-size: cover;
+    margin-top: -25px;
+    background-color: #2D7DDD;
+    border-radius: 0 !important;
+    padding-top: 20vh;
+    height: 50vh;
 }
 
 .jumbotron h1{
     color: white;
-    text-align: right;
 }
 
 .jumbotron p{
     color: white;
-    text-align: right;
     font-weight: bold;
 }
 
 .bottom{
+    justify-content: center;
     text-align: center; 
     padding-top: 2em;
     padding-bottom: 2em;
@@ -26,7 +31,7 @@
 }
 
 #coffeeMap{
-    margin: 0 auto;
+    margin: 25px auto;
 }
 
 #coffeeMap .glyphicon.glyphicon-link{
