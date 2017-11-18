@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "\n.jumbotron{\n    background: url(\"../images/coffee-cup-full-crpd.jpg\");\n    background-size: cover;\n}\n\n.jumbotron h1{\n    color: white;\n    text-align: right;\n}\n\n.jumbotron p{\n    color: white;\n    text-align: right;\n    font-weight: bold;\n}\n\n.bottom{\n    text-align: center; \n    padding-top: 2em;\n    padding-bottom: 2em;\n}\n\n.bottom p{\n    color: black;\n}\n\n#coffeeMap{\n    margin: 0 auto;\n}\n\n#coffeeMap .glyphicon.glyphicon-link{\n    font-size: 18pt;\n}",
+    "created" : 1492615700730.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2772518797",
+    "id" : "5E609AFD",
+    "lastKnownWriteTime" : 1492616146,
+    "last_content_update" : 1492616146772,
+    "path" : "~/Dropbox/Programming/R/R_Shiny/EU_Coffee_Map/www/css/app.css",
+    "project_path" : "www/css/app.css",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "css"
+}

@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#'////////////////////////////////////////////////\n#' FILE: server.R\n#' AUTHOR: David Ruvolo\n#' CREATED: April 18, 2017\n#' PURPOSE: \"backend\" for shinyapp\n#' NOTES: needs euroCoffee.csv\n#'////////////////////////////////////////////////\nshinyServer(function(input, output, session){\n    # make map\n    output$coffeeMap <- renderLeaflet({\n        leaflet(data = euroCoffee) %>%\n            # set default view\n            setView(lng = 4.2346672,lat = 55.396824, zoom=3) %>%\n            # add theme\n            # addTiles(providers$Thunderforest.Transport) %>%\n            # addProviderTiles(provider = \"Esri.WorldStreetMap\") %>%\n            addTiles() %>%\n            # add markers\n            addMarkers(lng = ~long,\n                       lat = ~lat,\n                       popup = paste0(\"<div class='map-popup text-center'>\",\n                                      \"<h3>\",euroCoffee$cafe,\"</h3>\",\n                                      \"<hr>\",\n                                      \"<p>\", euroCoffee$address,\"</p>\",\n                                      \"<a href=\",\"'\", \n                                      euroCoffee$href,\"'\",\n                                      \"><span class='glyphicon glyphicon-link'></span></a>\",\n                                      \"</div>\"),\n                       clusterOptions = markerClusterOptions(\n                           spiderfyOnMaxZoom = FALSE\n                       ))\n    })\n    \n    #' for resetting the zoom level to default\n    observeEvent(input$defaultMapView,{\n        leafletProxy(\"coffeeMap\") %>%\n            setView(lng = 4.2346672,lat = 55.396824, zoom=3)\n    })\n    \n    })",
+    "created" : 1492615692865.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "264370088",
+    "id" : "4EE3FEC3",
+    "lastKnownWriteTime" : 1492617548,
+    "last_content_update" : 1492617548972,
+    "path" : "~/Dropbox/Programming/R/R_Shiny/EU_Coffee_Map/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,127 @@
+body{
+    font-family: helvetica, sans-serif;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    cursor: default;
+}
+
+.jumbotron{
+	height: 100vh;
+	background: #BF0603;
+}
+
+.inner-container{
+    margin-top: 15vh;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    /*width: 85%;*/
+    /*border-radius: 10px;*/
+    /*background-color: #97D2FB;*/
+}
+
+/*#jumboTronBtn{
+    border: 2px solid white;
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+    font-weight: 400;
+    transition: 0.4s ease-in-out;
+}
+
+#jumboTronBtn:hover{
+    border: 2px solid rgb(111,111,255);
+    background-color: rgba(111,111,255, 0.2);
+    color: rgb(111,111,255);
+}*/
+
+.jumbotron h1{
+    padding-left: 6.5%;
+    color: white;
+} 
+
+.jumbotron #subtitle{
+    padding-left: 6.5%;
+}
+
+.jumbotron h2{
+    display: inline;
+    color: white;
+    padding-left: 0;
+    padding-right: 0;
+} 
+
+.jumbotron hr{
+    width: 75%;
+    margin: 0.3em 0 0.3em 0;
+    border: 3px solid white;
+}
+
+.jumbotron p{
+    padding-left: 6.5%;
+    font-weight: 400;
+    color: white;
+}
+
+.jumbotron a{
+    margin-left: 6.5%;
+}
+
+.spacer{
+    height: 8em;
+}
+
+.mini-spacer{
+    height: 2em;
+}
+
+.micro-spacer{
+    height: 0.2em;
+}
+.h-spacer{
+    display: inline;
+    width: 2em;
+}
+
+.title-icon{
+    padding-left: 7.5%;
+    font-size: 64pt;
+    color: white;
+}
+
+.map-container{
+    height: 100vh;
+}
+
+#myAdventures{
+    padding-top: 1em !important;
+    height: 65vh !important;
+}
+
+/* POPUP BOX CONTENT*/
+.popup-box h3{text-align: center;}
+
+.popup-box .popupIcons{
+    text-align:center;
+    font-size: 14pt;
+    padding-bottom: 0.5em;
+}
+
+.popup-box a{
+    text-align: center !important;
+}
+
+@media only screen 
+    and (min-device-width: 300px) 
+    and (max-device-width: 1023px){
+    
+    .inner-container{
+        margin-top: 8vh !important;
+    }
+    
+    .dataInput{display: block !important;}
+    .dataBreakers{display: none !important;}
+    
+    .map-container{
+        float: left;
+        width: 85% !important;
+    }
+}
