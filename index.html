@@ -10,27 +10,31 @@
 	<!-- LINK -->
 	<style type="text/css">
 	.header{
-		background-color: #92374D;
 		margin-bottom: 2em;
 	}
 
 	.header-content{
 		width: 90%;
 		margin: auto;
-		padding:5em 0 5em 0;
-		color: white;
+		padding: 10em 0 10em 0;
 	}
 
 	.header-content h1{
 		font-size: 5rem;
 		margin: 0;
+		padding: 0;
 		font-weight: 600;
+		line-height: .5;
 	}
 
 	.header-content p{
-		font-size: 1.5rem;
+		font-size: 1.75rem;
 		font-weight: 300;
+		padding-bottom: 6px;
+		border-bottom: 2px solid #252525;
+		margin-bottom: 1.5em;
 	}
+</style>
 </style>
 <link rel="preload" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" as="style" onload="this.rel='stylesheet'">
 <link rel="preload" href="https://use.fontawesome.com/9ec86712d8.css" as="style" onload="this.rel='stylesheet'">
@@ -48,20 +52,21 @@
 <title>dcrData</title>
 </head>
 <body>
+
 	<!-- header -->
 	<div class="header">
 		<div class="header-content">
 			<h1>Shiny Apps Gallery</h1>
 			<p>My collection of shiny apps</p>
+			<!-- breadcrumbs -->
+			<div class="breadcrumbs-wrapper">
+				<ul class="breadcrumbs">
+					<li><a href="https://davidruvolo51.github.io/"><span class="fa fa-home"></span></a></li>
+					<li><a href="https://davidruvolo51.github.io/#projects"><span>Projects</span></a></li>
+					<li><a href="">Shiny Apps Gallery</a></li>
+				</ul>
+			</div>
 		</div>
-	</div>
-
-	<div class="breadcrumbs-wrapper">
-		<ul class="breadcrumbs">
-			<li><a href="https://davidruvolo51.github.io/"><span class="fa fa-home"></span></a></li>
-			<li><a href="https://davidruvolo51.github.io/#projects"><span>Projects</span></a></li>
-			<li><a href="">My Shiny Apps Gallery</a></li>
-		</ul>
 	</div>
 
 	<div class="container">
@@ -71,6 +76,10 @@
 				<!-- ///////////////////////////////////////// -->
 				<!-- 1hr shiny challenge -->
 				<div class="grid-box">
+					<!-- header -->
+					<div class="grid-box-header">
+						<img src="http://res.cloudinary.com/dcruvolo/image/upload/v1526381298/Screen_Shot_2018-05-15_at_8.47.47_PM_cimnbn.png">
+					</div>
 					<!-- body -->
 					<div class="grid-box-body">
 						<h1>1hr shiny challenge: runneR</h1>
@@ -94,13 +103,17 @@
 				<!-- ///////////////////////////////////////// -->
 				<!-- air mashal misconduct -->
 				<div class="grid-box">
+					<!-- header -->
+					<div class="grid-box-header">
+						<img src="http://res.cloudinary.com/dcruvolo/image/upload/v1526381599/Screen_Shot_2018-05-15_at_8.52.44_PM_nwioyv.png">
+					</div>
 					<!-- body -->
 					<div class="grid-box-body">
 						<h1>Air Marshal Misconduct</h1>
 						<p>
 							In the ProPublica article <a href="https://www.propublica.org/article/tsa-releases-data-on-air-marshal-misconduct-7-years-after-we-asked">TSA releases data on air marshal misconduct 7 years after we asked</a>, Michael Grabell describes the lengthy journey to obtain the Air Marshal Misconduct dataset. The dataset contains 5213 records of misconduct from 2002 to 2012. Misconduct ranges from "Loss of Equipment" to "Criminal Arrest".
 						</p>
-						<p>This shiny app visualizes the air marshall misconduct data released by ProPublica. The app was an experimentation with rendering R markdown files within a shiny app. This project was awarded a runner-up place in the data visualization category at the 2016 OxTalent competition.</p>
+						<p>This shiny app visualizes the air marshall misconduct data released by ProPublica. The app was an experimentation with rendering R markdown files within a shiny app. This project was awarded a runner-up place in the data visualization category at the 2016 OxTalent competition. New version coming soon!</p>
 					</div>
 					<!-- content -->
 					<div class="grid-box-footer">
@@ -203,8 +216,8 @@
 	</div>
 </body>
 <footer>
-	<p>Made with <i class="fa fa-heart"></i>,&nbsp;<i class="fa fa-coffee"></i>, and&nbsp;<i class="fa fa-table"></i> (css grid)</p>
+	<p>Made with <i class="fa fa-heart"></i> + <i class="fa fa-coffee"></i></p>
 	<p>by</p>
-	<a href="https://davidruvolo51.github.io">david ruvolo</a>
+	<a href="https://davidruvolo51.github.io">davidruvolo</a>
 </footer>
 </html>

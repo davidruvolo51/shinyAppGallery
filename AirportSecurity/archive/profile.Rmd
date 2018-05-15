@@ -1,0 +1,190 @@
+<!--- PROFILE BUILDER RMD FILE TO SHIP WITH SHINY APP --->
+```{r, echo = F}
+# INITIAL STEPS
+#======================================
+# get basic info on airport for headings, titles, etc.
+name <- unique(originalDF()$Field.Office)
+temp <- airports2[grep(name,airports2$codes),]
+name <- paste0("Airport: ", temp$names[1])
+loc <- paste0("Location: ",temp$city[1],", ",temp$state[1])
+#======================================
+# MAKE DATAFRAME
+# COLNAMES USED: "Allegation","cases","rate","tooltip.text","parsed.labs","group"#
+df <- summedDF()
+#df <- totals # for testing purposes
+df <- df[order(df$cases, decreasing = T),]
+tfive <- df[c(1:5),]
+
+```
+
+<!---MANUALLY MAKE LEGEND -->
+<center>
+
+    <svg height="80" width="90">
+        <circle cx="50" cy="80" r="15" fill="#3288bd" />
+    </svg> Low (< 150 cases)
+
+    <svg height="80" width="90">
+        <circle cx="50" cy="80" r="15" fill="#fdae61" /> 
+    </svg> Medium (150 to 300 cases)
+
+    <svg height="80" width="90">
+        <circle cx="50" cy="80" r="15" fill="#9e0142" />
+    </svg> High (> 300 cases)
+
+</center>
+<!---=======================================================================--->
+
+<hr style = "border-bottom: dotted 1px;"/>
+
+<h3>`r name`</h3>
+<h4>`r loc`</h4>
+<br><br>
+
+<!---=======================================================================--->
+<center><h4>How many violations were recorded?</h4></center>
+<!---=======================================================================--->
+<!--TABLE: For displaying allegations data. 
+        - 3 Cols:
+                - 1: Info section on plot itemized list of top 5
+                - 2: spacing column set to 5%
+                - 3: plotly plot
+--> 
+<table width = "100%", border = "0">
+<!---COLUMN 1: INFO-->
+<tr valign = "top">
+<td width = "40%">
+<br><br>
+Between 2002 through 2012, `r sum(df$cases)` allegations were recorded at the field office at `r temp$names[1]`.
+
+<br><br>
+The top five allegations are listed below. 
+<br><br>
+
+<ol>
+<li>`r tfive$Allegation[1]`: `r tfive$cases[1]` cases.</li>
+<li>`r tfive$Allegation[2]`: `r tfive$cases[2]` cases.</li>
+<li>`r tfive$Allegation[3]`: `r tfive$cases[3]` cases.</li>
+<li>`r tfive$Allegation[4]`: `r tfive$cases[4]` cases.</li>
+<li>`r tfive$Allegation[5]`: `r tfive$cases[5]` cases.</li>
+</ol>
+
+</td>
+<!---=======================================================================--->
+<!---COL2: BLANK FOR SPACING--->
+<td width = "5%"></td>
+<!---=======================================================================--->
+<!---COL3: Plotly output--->
+<td width = "55%">
+
+```{r, echo = F, fig.width=8, fig.height=7}
+#======================================
+# PLOTLY: Horizontal Bar Chart
+plot_ly(
+            data = summedDF(),
+            y = parsed.labs,
+            x = cases,
+            type = "bar",
+            orientation = "h",
+            hoverinfo = "text",
+            marker = list(color = toRGB("#016c59")),
+            text = paste(unique(group),"<br>",
+                    "Allegation: ",Allegation,"<br>", 
+                    "Cases: ", cases, " (",rate*100,"%)")
+            ) %>% 
+                #------------------
+                # Layout Options
+                layout(hovermode = "closest" , 
+                    xaxis = list(title = "No. of Allegations"),
+                    yaxis = list(title = "", tickfont = list(size = 6))
+                ) %>% 
+                    #------------------
+                    # Addition Options
+                    config(displayModeBar = F)
+#======================================
+```
+
+</td></tr> 
+<!---=======================================================================--->
+<!---END TABLE--->
+</table>
+<!---=======================================================================--->
+<hr style = "border-bottom: dotted 1px;"/>
+<!---=======================================================================--->
+<!--TABLE: For displaying resolutions data. 
+        - 3 Cols:
+                - 1: Info section on plot itemized list of top 5
+                - 2: spacing column set to 5%
+                - 3: plotly plot
+--> 
+```{r, echo = F}
+# COLNAMES: "Final.Disposition","cases","rate","tooltip.text","parsed.labs","group"
+df2 <- dispositionDF()
+#df <- totals # for testing purposes
+df2 <- df2[order(df2$cases, decreasing = T),]
+tfive2 <- df2[c(1:5),]
+
+```
+
+<!---=======================================================================--->
+<center><h4>How were violations resolved?</h4></center>
+<!---=======================================================================--->
+<table width = "100%", border = "0">
+<!---COLUMN 1: INFO-->
+<tr valign = "top">
+<td width = "55%">
+
+
+```{r, echo = F, fig.width = 8, fig.height=7}
+#======================================
+# PLOTLY: Horizontal Bar Chart
+plot_ly(
+            data = dispositionDF(),
+            y = parsed.labs,
+            x = cases,
+            type = "bar",
+            orientation = "h",
+            hoverinfo = "text",
+            marker = list(color = toRGB("#d0d1e6")),
+            text = paste(unique(group),"<br>",
+                    "Resolution: ",Final.Disposition,"<br>", 
+                    "Cases: ", cases, " (",rate*100,"%)")
+            ) %>% 
+                #------------------
+                # Layout Options
+                layout(hovermode = "closest" , 
+                        xaxis = list(title = ""),
+                        yaxis = list(title = "", tickfont = list(size = 9))
+                    ) %>% 
+                    #------------------
+                    # Addition Options
+                    config(displayModeBar = F)
+#======================================
+```
+
+<!---=======================================================================--->
+<!---COL2: BLANK FOR SPACING--->
+<td width = "5%"></td>
+<!---=======================================================================--->
+<!---COL3: Plotly output--->
+<td width = "40%">
+<br><br>
+Of the `r sum(df$cases)` allegations recorded at the field office at `r temp$names[1]`. The most 
+frequent resolution was '`r tfive2$Final.Disposition[1]`'. The top five allegation 
+resolutions are listed below. 
+<br><br>
+
+<ol>
+<li>`r tfive2$Final.Disposition[1]`: `r tfive2$cases[1]` cases.</li>
+<li>`r tfive2$Final.Disposition[2]`: `r tfive2$cases[2]` cases.</li>
+<li>`r tfive2$Final.Disposition[3]`: `r tfive2$cases[3]` cases.</li>
+<li>`r tfive2$Final.Disposition[4]`: `r tfive2$cases[4]` cases.</li>
+<li>`r tfive2$Final.Disposition[5]`: `r tfive2$cases[5]` cases.</li>
+</ol>
+
+</td></tr>
+</table>
+<!---=======================================================================--->
+<hr style = "border-bottom: dotted 1px;"/>
+
+<center><h4>How many suspensions were given and what was the range of days assigned?</h4></center>

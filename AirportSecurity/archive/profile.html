@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>r name</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<!--- PROFILE BUILDER RMD FILE TO SHIP WITH SHINY APP --->
+
+<pre><code class="r, echo = F"># INITIAL STEPS
+#======================================
+# get basic info on airport for headings, titles, etc.
+name &lt;- unique(originalDF()$Field.Office)
+temp &lt;- airports2[grep(name,airports2$codes),]
+name &lt;- paste0(&quot;Airport: &quot;, temp$names[1])
+loc &lt;- paste0(&quot;Location: &quot;,temp$city[1],&quot;, &quot;,temp$state[1])
+#======================================
+# MAKE DATAFRAME
+# COLNAMES USED: &quot;Allegation&quot;,&quot;cases&quot;,&quot;rate&quot;,&quot;tooltip.text&quot;,&quot;parsed.labs&quot;,&quot;group&quot;#
+df &lt;- summedDF()
+#df &lt;- totals # for testing purposes
+df &lt;- df[order(df$cases, decreasing = T),]
+tfive &lt;- df[c(1:5),]
+
+</code></pre>
+
+<!---MANUALLY MAKE LEGEND
+<center>
+
+    <svg height="80" width="90">
+        <circle cx="50" cy="80" r="15" fill="#3288bd" />
+    </svg> Low (6-138 cases; <1 SD)
+
+    <svg height="80" width="90">
+        <circle cx="50" cy="80" r="15" fill="#fee08b" /> 
+    </svg> Med (164-269 cases; 1-2 SD)
+
+    <svg height="80" width="90">
+        <circle cx="50" cy="80" r="15" fill="#9e0142" />
+    </svg> High (363-530 cases; >2 SD)
+
+</center>
+ &ndash;>
+
+<!---=======================================================================--->
+
+<hr style = "border-bottom: dotted 1px;"/>
+
+<h3>r name</h3>
+
+<h4>r loc</h4>
+
+<p><br><br></p>
+
+<!---=======================================================================--->
+
+<p><center><h4>How Many Violations are Recorded?</h4></center></p>
+
+<!---=======================================================================--->
+
+<!--TABLE: For displaying allegations data. 
+        - 3 Cols:
+                - 1: Info section on plot itemized list of top 5
+                - 2: spacing column set to 5%
+                - 3: plotly plot
+--> 
+
+<table width = "100%", border = "0">
+<!---COLUMN 1: INFO-->
+<tr valign = "top">
+<td width = "55%">
+<br><br>
+Between 2002 through 2012, r sum(df$cases) allegations were recorded at the field office at r temp$names[1].
+
+The top five allegations are listed below. 
+<br><br>
+
+<ol>
+<li>r tfive$Allegation[1]: r tfive$cases[1] cases.</li>
+<li>r tfive$Allegation[2]: r tfive$cases[2] cases.</li>
+<li>r tfive$Allegation[3]: r tfive$cases[3] cases.</li>
+<li>r tfive$Allegation[4]: r tfive$cases[4] cases.</li>
+<li>r tfive$Allegation[5]: r tfive$cases[5] cases.</li>
+</ol>
+
+</td>
+<!---=======================================================================--->
+<!---COL2: BLANK FOR SPACING--->
+<td width = "5%"></td>
+<!---=======================================================================--->
+<!---COL3: Plotly output--->
+<td width = "40%">
+
+&ldquo;{r, echo = F, fig.width=5, fig.height=6}
+#======================================
+# PLOTLY: Horizontal Bar Chart
+plot_ly(
+            data = summedDF(),
+            y = parsed.labs,
+            x = cases,
+            type = &quot;bar&rdquo;,
+            orientation = &ldquo;h&rdquo;,
+            hoverinfo = &ldquo;text&rdquo;,
+            marker = list(color = toRGB(&ldquo;#016c59&rdquo;)),
+            text = paste(unique(group),&ldquo;<br>&rdquo;,
+                    &ldquo;Allegation: &rdquo;,Allegation,&ldquo;<br>&rdquo;, 
+                    &ldquo;Cases: &rdquo;, cases, &ldquo; (&rdquo;,rate*100,&ldquo;%)&rdquo;)
+            ) %>% 
+                #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+                # Layout Options
+                layout(hovermode = &ldquo;closest&rdquo; , 
+                    xaxis = list(title = &ldquo;No. of Allegations&rdquo;),
+                    yaxis = list(title = &ldquo;&rdquo;, tickfont = list(size = 6))
+                ) %>% 
+                    #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+                    # Addition Options
+                    config(displayModeBar = F)
+#======================================
+&ldquo;
+
+</td></tr> 
+<!---=======================================================================--->
+<!---END TABLE--->
+</table>
+
+<!---=======================================================================--->
+
+<hr style = "border-bottom: dotted 1px;"/>
+
+<!---=======================================================================--->
+
+<!--TABLE: For displaying resolutions data. 
+        - 3 Cols:
+                - 1: Info section on plot itemized list of top 5
+                - 2: spacing column set to 5%
+                - 3: plotly plot
+--> 
+
+<pre><code class="r, echo = F"># COLNAMES: &quot;Final.Disposition&quot;,&quot;cases&quot;,&quot;rate&quot;,&quot;tooltip.text&quot;,&quot;parsed.labs&quot;,&quot;group&quot;
+df2 &lt;- dispositionDF()
+#df &lt;- totals # for testing purposes
+df2 &lt;- df2[order(df2$cases, decreasing = T),]
+tfive2 &lt;- df2[c(1:5),]
+
+</code></pre>
+
+<!---=======================================================================--->
+
+<p><center><h4>How Were Violations Resolved?</h4></center></p>
+
+<!---=======================================================================--->
+
+<table width = "100%", border = "0">
+<!---COLUMN 1: INFO-->
+<tr valign = "top">
+<td width = "40%">
+
+
+&rdquo;{r, echo = F, fig.width=5, fig.height=6}
+#======================================
+# PLOTLY: Horizontal Bar Chart
+plot_ly(
+            data = dispositionDF(),
+            y = parsed.labs,
+            x = cases,
+            type = &ldquo;bar&rdquo;,
+            orientation = &ldquo;h&rdquo;,
+            hoverinfo = &ldquo;text&rdquo;,
+            marker = list(color = toRGB(&ldquo;#d0d1e6&rdquo;)),
+            text = paste(unique(group),&ldquo;<br>&rdquo;,
+                    &ldquo;Resolution: &rdquo;,Final.Disposition,&ldquo;<br>&rdquo;, 
+                    &ldquo;Cases: &rdquo;, cases, &ldquo; (&rdquo;,rate*100,&ldquo;%)&rdquo;)
+            ) %>% 
+                #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+                # Layout Options
+                layout(hovermode = &ldquo;closest&rdquo; , 
+                        xaxis = list(title = &ldquo;&rdquo;),
+                        yaxis = list(title = &ldquo;&rdquo;, tickfont = list(size = 6))
+                    ) %>% 
+                    #&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+                    # Addition Options
+                    config(displayModeBar = F)
+#======================================
+&ldquo;
+
+<!---=======================================================================--->
+<!---COL2: BLANK FOR SPACING--->
+<td width = "5%"></td>
+<!---=======================================================================--->
+<!---COL3: Plotly output--->
+<td width = "55%">
+<br><br>
+Of the r sum(df$cases) allegations recorded at the field office at r temp$names[1]. The most 
+frequent resolution was &lsquo;r tfive2$Final.Disposition[1]&rsquo;. The top five allegation 
+resolutions are listed below. 
+<br><br>
+
+<ol>
+<li>r tfive2$Final.Disposition[1]: r tfive2$cases[1] cases.</li>
+<li>r tfive2$Final.Disposition[2]: r tfive2$cases[2] cases.</li>
+<li>r tfive2$Final.Disposition[3]: r tfive2$cases[3] cases.</li>
+<li>r tfive2$Final.Disposition[4]: r tfive2$cases[4] cases.</li>
+<li>r tfive2$Final.Disposition[5]: r tfive2$cases[5] cases.</li>
+</ol>
+
+</td></tr>
+</table>
+
+<!---=======================================================================--->
+
+<hr style = "border-bottom: dotted 1px;"/>
+
+<p><center><h4>Distribution of Suspensions as a Final Disposition</h4></center></p>
+
+<p>The chart below illustrates of those who were suspended, how many days did they receive? In the center, the top line represents the number of days an individual could be suspended for, whereas the value directly below represents the number of individuals who received that suspension. The length of the segments indicate more cases. </p>
+
+</body>
+
+</html>
