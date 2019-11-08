@@ -1,4 +1,7 @@
-## Shiny Apps Gallery
+![shiny gallery](shinygallery.png)
 
-A collection of various shiny apps that I've built. You can read more about them here: [https://davidruvolo51.github.io/shinyAppGallery/](https://davidruvolo51.github.io/shinyAppGallery/).
+# Shiny Gallery
 
+This repo has a collection of shiny applications that demonstrate the methods discussed in the [shiny tutorials](https://davidruvolo51.github.io/shinytutorials/) project.
+
+More to come!
