@@ -1,192 +1,121 @@
 #'//////////////////////////////////////////////////////////////////////////////
 #' FILE: ui.R
-#' AUTHOR: David RUvolo
-#' CREATED: 24 May 2018
-#' MODIFIED: 22 June 2018
-#' PURPOSE: front end
+#' AUTHOR: David Ruvolo
+#' CREATED: 2018-05-24
+#' MODIFIED: 2019-11-11
+#' PURPOSE: shiny ui
 #' PACKAGES: see global.R
-#' STATUS: in.progress
+#' STATUS: working
 #' COMMENTS: NA
 #'//////////////////////////////////////////////////////////////////////////////
 #' GLOBAL OPTIONS:
 options(stringsAsFactors = FALSE)
-
-# ui
 ui <- tagList(
   
-  shinyjs::useShinyjs(),
+  	# <head>
+  	tags$head(
+    	tags$meta("charset" ="utf-8"),
+    	tags$meta("http-equiv" ="X-UA-Compatible", "content" ="IE=edge"),
+    	tags$meta("name" ="viewport", "content"="width=device-width, initial-scale=1"),
+    
+    	# link
+    	# tags$link("href"="css/styles.css", "rel"="stylesheet")
+    	tags$link("href"="css/styles.min.css", "rel"="stylesheet")
+    
+  	),
   
-  #'////////////////////////////////////////
-  # head
-  tags$head(
-    
-    # set meta
-    tags$meta("charset" ="utf-8"),
-    tags$meta("http-equiv" ="X-UA-Compatible", "content" ="IE=edge"),
-    tags$meta("name" ="viewport", "content"="width=device-width, initial-scale=1"),
-    
-    # link
-    tags$link("href"="css/styles.css", "rel"="stylesheet")#,
-    # tags$link("href"="css/readme.css", "rel"="stylesheet")
-    
-  ), # END HEAD
-  
-  #'////////////////////////////////////////
-  # body
-  tags$body(
-    
-    # quit modal
-    shinyjs::hidden(
-      tags$div(class="modal", id="quitMsg",
-               tags$div(class="modal-content",
-                        tags$p("Are you sure you want to quit?"),
-                        actionButton(inputId = "no",
-                                     label = "No",
-                                     icon = icon("ban"),
-                                     class="quit-btn no-btn"),
-                        actionButton(inputId = "yes",
-                                     label = "Yes",
-                                     icon = icon("sign-out"),
-                                     class="quit-btn yes-btn")
-               )
-      )
-    ),
-    
-    #'////////////////////////////////////////
-    # set ui container
-    tags$div(class="container",
-             
-             # overlay - info
-             shinyjs::hidden(
-               tags$div(class="block-overlay", id="overlay",
-                        tags$div(class="block-overlay-content",
-                                 tags$div(id="help",
-                                          uiOutput("infoDoc")
-                                 )
-                        )
-               )
-             ),
-             
-             #'////////////////////////////////////////
-             # header
-             tags$div(class="block-header-bar",
-                      tags$div(class="block-header-bar-content",
-                               
-                               # title
-                               tags$div(class="header-bar-box",
-                                        tags$h1("GRID_ID Finder")
-                               ),
-                               
-                               # button: info
-                               actionButton(inputId="info", 
-                                            label=NULL,
-                                            icon = icon("info-circle"),
-                                            "title" = "Show More Info (alt + i)",
-                                            "accesskey" = "i",
-                                            class="header-bar-box box-btn"),
-                               
-                               # button: refresh
-                               actionButton(inputId = "refresh",
-                                            label=NULL,
-                                            icon=icon("refresh"),
-                                            "title" = "Refresh App (alt + r)",
-                                            "accesskey" = "r",
-                                            class="header-bar-box box-btn"),
-                               
-                               # button: quit
-                               actionButton(inputId="quit",
-                                            label=NULL,
-                                            icon =icon("power-off"),
-                                            "title" = "Quit (alt + x)",
-                                            "accesskey"="x",
-                                            class="header-bar-box box-btn")
-                      )
-             ),
-             
-             #'////////////////////////////////////////
-             # input block
-             tags$div(class="block",
-                      tags$div(class="block-grid",
-                               
-                               #'////////////////////////////////////////
-                               # column: 1 
-                               tags$div(class="block-item",
-                                        # content
-                                        tags$div(class="block-item-content",
-                                                 tags$h3("Search"),
-                                                 
-                                                 #'////////////////////////////////////////
-                                                 # filters: country
-                                                 tags$p("Filter for a Country (Optional)"),
-                                                 selectInput(inputId = "country",label=NULL,
-                                                             choices = c("",choices),
-                                                             selected = "",
-                                                             multiple = FALSE,
-                                                             width = "100%"),
-                                                 
-                                                 #'////////////////////////////////////////
-                                                 # filter: city
-                                                 tags$p("Filter for a City (Optional)"),
-                                                 uiOutput("filterCityUI"),
-                                                 
-                                                 #'////////////////////////////////////////
-                                                 # search: phrase
-                                                 tags$p("Enter a name or phrase:"),
-                                                 HTML("<input type='text' id='query' accesskey='q'>"),
-                                                 tags$div(class="button-container",
-                                                          actionButton(inputId="clear",
-                                                                       label = "Clear",
-                                                                       icon=icon("times-circle"),
-                                                                       "title"="Clear filters",
-                                                                       "accesskey" ="z",
-                                                                       class="button reset"),
-                                                          actionButton(inputId = "submit",
-                                                                       label = "Submit",
-                                                                       icon=icon("search"),
-                                                                       "title" ="Submit Query",
-                                                                       class="button submit")
-                                                 )
-                                        )
-                               ),
-                               
-                               #'////////////////////////////////////////
-                               #' column: 2
-                               tags$div(class="block-item item-spanned",
-                                        tags$div(class="block-item-content",
-                                                 tags$h3("Results"),
-                                                 tags$style("table.dataTable.hover tbody tr:hover, 
-                                                            table.dataTable.display tbody tr:hover{
-                                                            background-color: #FBD1A2;color: black;}"),
-                                                 DT::dataTableOutput("table")
-                                        )
-                               ),
-                               
-                               #'////////////////////////////////////////
-                               # column: 2
-                               tags$div(class="block-item",
-                                        # contente
-                                        tags$div(class="block-item-content",
-                                                 tags$h3("Selected ID"),
-                                                 tags$div(class="code-output",
-                                                          id="codeOutput",
-                                                          textOutput("selection")
-                                                 ),
-                                                 actionButton(inputId = "copy",
-                                                              label = "Copy",
-                                                              icon=icon("clone"),
-                                                              "title"="Copy id",
-                                                              class="button copy",
-                                                              "accesskey"="c",
-                                                              "data-clipboard-text" = "")
-                                        )
-                               )
-                      )
-             )
-    ), # END CONTAINER
-    #'////////////////////////////////////////
-    # clipboardjs
-    tags$script("src"="assets/clipboard.js-master/dist/clipboard.min.js"),
-    tags$script(type="text/javascript","new ClipboardJS('.button');")
-    
-  ) # END BODY
-) # END
+  	#'////////////////////////////////////////
+	# <body>
+	tags$body(
+
+		# screen reader content
+		tags$a(href="main", class="screen-reader-text", "Skip to main content"),
+
+		# <header>
+		tags$header(class="header",
+			tags$h1(class="header-title", "Grid ID Finder"),
+			tags$ul(class="menu", `aria-label`="page options",
+				tags$li(class="menu-item",
+					tags$button(id="refresh", type="button", class="action-button shiny-bound-input btn btn-secondary", "Refresh", accesskey="r")
+				)
+			)
+		),
+
+		# <main>
+		tags$main(class="main", id="main", `aria-label`="main content",
+
+			# <aside> - sidebar
+			tags$aside(class="sidebar sidebar-search", `aria-label`="search",
+
+				# <aside> panel for "search"
+				tags$section(class="panel panel-search",
+					tags$div(Class="inner-content",
+						tags$h2("Search for Id"),
+
+						# <form>
+						tags$form(class="form",
+
+							# <input> for country
+							tags$label(class="label", `for`="country", "Filter by Country"),
+							selectInput(
+							    inputId="country", 
+							    label = NULL, 
+							    choices = choices,
+								selected = "",
+							    width = "100%"
+							),
+
+							# <input> for city
+							tags$label(class="label", `for`="city", "Filter by City"),
+							uiOutput("input_city"),
+
+							# <input> for text
+							tags$label(class="label", `for`="query", "Search by name or phrase"),
+							tags$input(type="search", id="query", class="input", accesskey="q"),
+
+							# submit button
+							tags$button(id="submit", type="button", class="action-button shiny-bound-input btn btn-primary btn-copy", "Submit")
+						)
+					)
+				),
+
+				# <aside> panel for results
+				tags$section(class="panel panel-results",
+					tags$div(class="inner-content",
+						tags$h2("Copy Result ID"),
+						tags$p("Select an entry in the results table to send the output id below. Copy the result to your clipboard for later use."),
+						tags$output(class="output", id="gridID", "select an id"),
+						tags$button(type="button", id="copy", accesskey="c", class="action-button shiny-bound-input btn btn-primary", `data-clipboard-text`="", "Copy ID")
+					)
+				)
+			),
+
+			# <div> - table output
+			tags$div(class="results", `aria-label`="search results",
+				tags$div(class="inner-content",
+					tags$h2("Results"),
+					tags$style("table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover{ background-color: #FBD1A2;color: black; cursor: pointer;}"),
+					DT::dataTableOutput("table")
+				)
+			)
+		),
+
+		# <footer>
+		tags$footer(class="footer",
+			tags$h2("More Information"),
+			tags$ul(class="menu",
+				tags$li(class="menu-item",
+					tags$a(class="menu-link", href="https://grid.ac/", "grid.ac")
+				),
+				tags$li(class="menu-item",
+					tags$a(class="menu-link", href="https://github.com/davidruvolo51/shinyAppGallery", "github")
+				)
+			)
+		),
+
+		# load js
+		tags$script(type="text/javascript", src="assets/clipboard.js-master/dist/clipboard.min.js"),
+		# tags$script(type="text/javascript", src="js/index.js")
+		tags$script(type="text/javascript", src="js/index.min.js")
+	)
+)
