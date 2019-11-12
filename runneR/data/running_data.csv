@@ -1,0 +1,138 @@
+date,status,distance,time_logged,route,run_temp,min_temp,max_temp,dur_est,country,reason_not_run,time_run_start
+8/17/17,yes,3.6,NA,park bridge,74.66,51.8,74.66,NA,australia,NA,NA
+8/18/17,yes,3.6,NA,park bridge,63.86,52.7,63.86,NA,australia,NA,NA
+8/19/17,no,0,NA,NA,NA,46.76,58.64,NA,australia,rest day,NA
+8/20/17,no,0,NA,NA,NA,42.26,59,NA,australia,rest day,NA
+8/21/17,yes,3.6,NA,park bridge,64.22,46.22,64.22,NA,australia,NA,NA
+8/22/17,yes,3.6,NA,park bridge,65.66,47.48,65.66,NA,australia,NA,NA
+8/23/17,yes,3.6,NA,park bridge,70.88,46.4,70.88,NA,australia,NA,NA
+8/24/17,yes,3.6,NA,park bridge,62.78,50.36,62.78,NA,australia,NA,NA
+8/25/17,yes,3.6,NA,park bridge,60.44,51.08,60.44,NA,australia,NA,NA
+8/26/17,no,0,NA,NA,NA,44.96,68.9,NA,australia,rest day,NA
+8/27/17,no,0,NA,NA,NA,44.96,67.64,NA,australia,rest day,NA
+8/28/17,yes,3.6,NA,park bridge,57.74,43.7,57.74,NA,australia,NA,NA
+8/29/17,yes,3.6,NA,park bridge,62.6,45.14,62.6,NA,australia,NA,NA
+8/30/17,yes,3.6,NA,park bridge,62.06,46.22,62.06,NA,australia,NA,NA
+8/31/17,yes,3.6,NA,park bridge,59.54,44.6,59.54,NA,australia,NA,NA
+9/1/17,yes,3.6,NA,park bridge,61.88,45.86,61.88,NA,australia,NA,NA
+9/2/17,no,0,NA,NA,NA,45.32,69.8,NA,australia,rest day,NA
+9/3/17,no,0,NA,NA,NA,50,84.02,NA,australia,rest day,NA
+9/4/17,yes,3.6,NA,park bridge,74.66,55.04,74.66,NA,australia,NA,NA
+9/5/17,yes,2.3,NA,kfc,67.64,51.08,67.64,NA,australia,NA,NA
+9/6/17,yes,2.3,NA,kfc,69.08,53.96,69.08,NA,australia,NA,NA
+9/7/17,yes,2.3,NA,kfc,71.24,50.9,71.24,NA,australia,NA,NA
+9/8/17,yes,2.3,NA,kfc,69.98,51.44,69.98,NA,australia,NA,NA
+9/9/17,no,0,NA,NA,NA,47.3,63.14,NA,australia,rest day,NA
+9/10/17,no,0,NA,NA,NA,45.5,65.48,NA,australia,rest day,NA
+9/11/17,no,0,NA,NA,NA,48.38,77,NA,australia,rest day,NA
+9/12/17,yes,2.7,NA,greek church,82.4,53.78,82.4,NA,australia,NA,NA
+9/13/17,yes,2.4,NA,kfc,95.54,60.98,95.54,NA,australia,NA,NA
+9/14/17,yes,2.7,NA,greek church,64.76,52.88,64.76,NA,australia,NA,NA
+9/15/17,yes,2.4,NA,kfc,73.76,53.06,73.76,NA,australia,NA,NA
+9/16/17,yes,2.4,NA,kfc,76.64,55.58,76.64,NA,australia,NA,NA
+9/17/17,no,0,NA,NA,NA,44.96,63.32,NA,australia,rest day,NA
+9/18/17,yes,2.4,NA,kfc,75.02,46.04,75.02,NA,australia,NA,NA
+9/19/17,yes,2.4,NA,kfc,76.1,53.78,76.1,NA,australia,NA,NA
+9/20/17,yes,2.4,NA,kfc,68,50,68,NA,australia,NA,NA
+9/21/17,yes,2.4,NA,kfc,76.1,50.72,76.1,NA,australia,NA,NA
+9/22/17,yes,2.4,NA,kfc,87.08,54.86,87.08,NA,australia,NA,NA
+9/23/17,no,0,NA,NA,NA,59.72,93.02,NA,australia,moving,NA
+9/24/17,no,0,NA,NA,NA,71.24,87.44,NA,australia,moving,NA
+9/25/17,no,0,NA,NA,NA,60.8,83.84,NA,australia,moving,NA
+9/26/17,no,0,NA,NA,NA,54.32,69.08,NA,australia,moving,NA
+9/27/17,no,0,NA,NA,NA,58.82,76.1,NA,australia,moving,NA
+9/28/17,yes,2.7,NA,greek church,79.88,64.58,79.88,NA,australia,NA,NA
+9/29/17,no,0,NA,NA,NA,55.58,81.68,NA,australia,rest day,NA
+9/30/17,no,0,NA,NA,NA,60.08,76.46,NA,australia,rest day,NA
+10/1/17,no,0,NA,NA,NA,50.9,71.78,NA,australia,rest day,NA
+10/2/17,yes,2.4,NA,kfc,75.56,53.06,75.56,NA,australia,NA,NA
+10/3/17,yes,3.8,NA,greek church,75.92,60.44,75.92,NA,australia,NA,NA
+10/4/17,yes,4.5,NA,office works,71.42,59,71.42,NA,australia,NA,NA
+10/5/17,yes,4.6,NA,office works,80.24,60.98,80.24,NA,australia,NA,NA
+10/6/17,yes,5.1,NA,office works,69.98,63.68,69.98,NA,australia,NA,NA
+10/7/17,no,0,NA,NA,NA,56.3,66.2,NA,australia,rest day,NA
+10/8/17,no,0,NA,NA,NA,55.04,73.22,NA,australia,rest day,NA
+10/9/17,yes,5.1,NA,office works,93.2,61.7,93.2,NA,australia,NA,NA
+10/10/17,yes,5.1,NA,office works,73.04,59.72,73.04,NA,australia,NA,NA
+10/11/17,yes,5.1,NA,office works,77.54,64.4,77.54,NA,australia,NA,NA
+10/12/17,no,0,NA,NA,NA,66.2,84.38,NA,australia,fatigue,NA
+10/13/17,no,0,NA,NA,NA,57.92,77.9,NA,australia,fatigue,NA
+10/14/17,no,0,NA,NA,NA,62.06,69.62,NA,australia,rest day,NA
+10/15/17,no,0,NA,NA,NA,59.54,72.32,NA,australia,rest day,NA
+10/16/17,yes,5.1,NA,office works,76.82,59.9,76.82,NA,australia,NA,NA
+10/17/17,yes,2.4,NA,kfc,77.72,62.6,77.72,NA,australia,NA,NA
+10/18/17,yes,5.1,NA,office works,78.8,64.22,78.8,NA,australia,NA,NA
+10/19/17,yes,3.2,NA,greek church,81.68,64.22,81.68,NA,australia,NA,NA
+10/20/17,no,0,NA,NA,NA,65.3,66.56,NA,australia,rest day,NA
+10/21/17,no,0,NA,NA,NA,55.76,65.12,NA,australia,rest day,NA
+10/22/17,no,0,NA,NA,NA,56.66,71.06,NA,australia,rest day,NA
+10/23/17,yes,3.1,NA,greek church,70.34,54.86,70.34,NA,australia,NA,NA
+10/24/17,yes,5.2,10/24/17 15:52,office works,80.42,56.66,80.42,NA,australia,NA,NA
+10/25/17,yes,2.3,10/25/17 23:32,kfc,87.8,63.86,87.8,NA,australia,NA,NA
+10/26/17,yes,5.1,10/26/17 16:36,office works,70.88,62.06,70.88,NA,australia,NA,NA
+10/27/17,yes,2.3,10/27/17 16:25,kfc,73.58,58.28,73.58,NA,australia,NA,NA
+10/28/17,no,0,10/28/17 22:57,NA,NA,63.5,82.76,NA,australia,rest day,NA
+10/29/17,no,0,10/29/17 17:43,NA,NA,65.48,90.86,NA,australia,rest day,NA
+10/30/17,no,0,10/30/17 23:52,NA,NA,66.02,99.14,NA,australia,heat,NA
+10/31/17,yes,5.1,10/31/17 19:18,office works,68,54.32,65.84,35,australia,NA,NA
+11/1/17,yes,4.4,11/1/17 11:05,greek church,60,54.5,69.62,33,australia,NA,12/31/99 9:45
+11/2/17,yes,4.4,11/2/17 11:55,greek church,67,58.1,72.14,31,australia,NA,12/31/99 9:15
+11/3/17,yes,5.7,11/3/17 10:58,greek church + office works,72,64.58,88.34,39,australia,NA,12/31/99 8:41
+11/4/17,no,0,11/6/17 11:35,NA,NA,60.26,62.78,NA,australia,rest day,NA
+11/5/17,no,0,11/6/17 11:38,NA,NA,57.74,68.54,NA,australia,rest day,NA
+11/6/17,yes,9.1,11/6/17 11:45,newtown,74,59.18,80.78,55,australia,NA,12/31/99 10:30
+11/7/17,no,0,11/8/17 10:39,NA,NA,56.12,67.64,NA,australia,rest day,NA
+11/8/17,no,0,11/9/17 22:27,NA,NA,58.1,68.36,NA,australia,scheduling,NA
+11/9/17,yes,5.7,11/9/17 22:28,greek church + office works,67,53.96,73.4,49,australia,NA,12/31/99 9:51
+11/10/17,no,0,11/11/17 12:20,NA,NA,58.64,74.66,NA,australia,site seeing,NA
+11/11/17,yes,5.7,11/11/17 14:27,greek church + office works,73,58.82,74.84,40,australia,NA,12/31/99 12:41
+11/12/17,no,0,11/14/17 17:15,NA,NA,59.9,73.94,NA,australia,rest day,NA
+11/13/17,no,0,11/14/17 17:15,NA,NA,60.8,73.04,NA,australia,rest day,NA
+11/14/17,yes,5.7,11/14/17 17:16,greek church + office works,69,58.28,74.48,34,australia,NA,12/31/99 10:05
+11/15/17,yes,6.4,11/15/17 23:07,greek church + office works,74,62.06,80.06,50,australia,NA,12/31/99 10:15
+11/16/17,yes,4.1,11/20/17 12:07,hurlstone park,79.16,66.38,79.16,30,australia,NA,12/31/99 10:15
+11/17/17,no,0,11/20/17 12:09,NA,NA,66.56,79.52,NA,australia,injury,NA
+11/18/17,no,0,11/20/17 12:09,NA,NA,65.3,73.94,NA,australia,injury,NA
+11/19/17,no,0,11/20/17 12:10,NA,NA,61.52,76.46,NA,australia,injury,NA
+11/20/17,no,0,11/20/17 12:15,NA,NA,63.68,73.22,NA,australia,injury,NA
+11/21/17,no,0,11/24/17 21:09,NA,NA,63.86,75.02,NA,australia,injury,NA
+11/22/17,no,0,11/24/17 21:10,NA,NA,63.32,76.28,NA,australia,injury,NA
+11/23/17,no,0,11/24/17 21:10,NA,NA,63.5,80.96,NA,australia,injury,NA
+11/24/17,no,0,11/24/17 21:11,NA,NA,64.94,84.02,NA,australia,injury,NA
+11/25/17,no,0,11/29/17 15:51,NA,NA,66.02,82.22,NA,australia,injury,NA
+11/26/17,no,0,11/29/17 15:52,NA,NA,66.02,82.94,NA,australia,injury,NA
+11/27/17,no,0,11/29/17 15:52,NA,NA,69.98,80.78,NA,australia,injury,NA
+11/28/17,no,0,11/29/17 15:52,NA,NA,64.94,80.06,NA,australia,injury,NA
+11/29/17,no,0,11/29/17 15:53,NA,NA,68.18,81.32,NA,australia,injury,NA
+11/30/17,no,0,12/11/17 22:04,NA,NA,68.72,84.92,NA,australia,injury,NA
+12/1/17,no,0,12/11/17 22:04,NA,NA,68.54,86.54,NA,australia,injury,NA
+12/2/17,no,0,12/11/17 22:04,NA,NA,68.18,85.82,NA,australia,injury,NA
+12/3/17,no,0,12/11/17 22:04,NA,NA,61.52,83.84,NA,australia,injury,NA
+12/4/17,no,0,12/11/17 22:04,NA,NA,60.08,65.66,NA,australia,injury,NA
+12/5/17,no,0,12/11/17 22:04,NA,NA,59.9,72.86,NA,australia,injury,NA
+12/6/17,no,0,12/11/17 22:05,NA,NA,64.04,79.52,NA,australia,injury,NA
+12/7/17,no,0,12/11/17 22:05,NA,NA,62.6,90.14,NA,australia,injury,NA
+12/8/17,no,0,12/11/17 22:05,NA,NA,68.54,85.64,NA,australia,injury,NA
+12/9/17,no,0,12/11/17 22:05,NA,NA,64.58,76.46,NA,australia,injury,NA
+12/10/17,yes,5.7,12/11/17 22:06,greek church + office works,82,62.78,80.42,45,australia,NA,12/31/99 11:02
+12/11/17,yes,5.7,12/11/17 22:08,greek church + office works,78,64.58,84.38,40,australia,NA,12/31/99 9:00
+12/12/17,yes,5.1,12/12/17 11:42,cooks river,81,68.72,84.2,45,australia,NA,12/31/99 12:00
+12/13/17,yes,2.2,12/13/17 11:52,kfc,81,68.36,87.08,14,australia,NA,12/31/99 10:41
+12/14/17,yes,5.7,12/13/17 11:35,greek church + office works,94,69.26,96.98,44,australia,NA,12/31/99 8:35
+12/15/17,yes,5.7,12/15/17 11:38,cooks river,70,68.54,76.64,35,australia,NA,12/31/99 10:50
+12/16/17,no,0,12/20/17 21:53,NA,NA,69.62,89.24,NA,australia,rest day,NA
+12/17/17,no,0,12/20/17 21:53,NA,NA,68.72,79.7,NA,australia,rest day,NA
+12/18/17,no,0,12/20/17 21:53,NA,NA,70.16,86.54,NA,australia,scheduling,NA
+12/19/17,yes,5.7,12/20/17 21:53,cooks river,82,69.98,93.56,45,australia,NA,12/31/99 9:40
+12/20/17,no,0,12/20/17 21:57,NA,NA,77.18,103.82,NA,australia,heat,NA
+12/21/17,no,0,1/17/18 8:11,NA,NA,68.9,77.36,NA,australia,vacation,NA
+12/22/17,no,0,1/17/18 8:24,NA,NA,67.46,82.58,NA,united.states,vacation,NA
+12/23/17,no,0,1/17/18 8:24,NA,NA,69.08,89.06,NA,united.states,vacation,NA
+12/24/17,no,0,1/17/18 8:24,NA,NA,70.52,106.88,NA,united.states,vacation,NA
+12/25/17,no,0,1/17/18 8:24,NA,NA,65.3,72.32,NA,united.states,vacation,NA
+12/26/17,no,0,1/17/18 8:24,NA,NA,66.38,75.92,NA,united.states,vacation,NA
+12/27/17,no,0,1/17/18 8:24,NA,NA,65.3,81.86,NA,united.states,vacation,NA
+12/28/17,no,0,1/17/18 8:24,NA,NA,67.28,84.74,NA,united.states,vacation,NA
+12/29/17,no,0,1/17/18 8:24,NA,NA,69.62,91.4,NA,united.states,vacation,NA
+12/30/17,no,0,1/17/18 8:24,NA,NA,71.96,96.26,NA,united.states,vacation,NA
+12/31/17,no,0,1/17/18 8:24,NA,NA,69.44,80.78,NA,united.states,vacation,NA
