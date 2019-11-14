@@ -8,9 +8,14 @@
 #' PACKAGES: NA
 #' COMMENTS: NA
 #'//////////////////////////////////////////////////////////////////////////////
+# add all data in nested object
+profile <- list()
+
+# home country: change as needed
+profile$country = "australia"
 
 # enter the name of your routes here
-routes <- c(
+profile$routes <- c(
     "",
     "kfc",
     "park bridge",
@@ -24,7 +29,7 @@ routes <- c(
 
 
 # enter reasons for not running here
-reasons <- c(
+profile$reasons <- c(
     "",
     "rest day",
     "injury",

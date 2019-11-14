@@ -8,64 +8,15 @@
 // STATUS: in.progress
 // COMMENTS: NA
 ////////////////////////////////////////////////////////////////////////////////
-// BEGIN
-
-// functions for handlers
-const utils = (function () {
-
-    ////////////////////////////////////////
-
-    // CSS MANIPULATION 
-
-    // function: add css class
+// DEFINE FUNCTIONS
+(function () {
+    
+    // ADD CSS CLASS
     function addCSS(elem, css) {
         document.querySelector(elem).classList.add(css);
     }
 
-    // function: remove css
-    function removeCSS(elem, css) {
-        document.querySelector(elem).classList.remove(css);
-    }
-
-    // function: toggle css
-    function toggleCSS(elem, css) {
-        document.querySelector(elem).classList.toggle(css);
-    }
-
-    ////////////////////////////////////////
-    // HTML MANIPULATION
-
-    // function: inner html
-    function innerHTML(elem, string) {
-        document.querySelector(elem).innerHTML = string;
-    }
-
-    // function: update element attribute
-    function setElementAttribute(elem, attr, value) {
-        document.querySelector(elem).setAttribute(attr, value);
-    }
-
-    // function: refresh page
-    function refreshPage() {
-        history.go(0);
-    }
-
-    // function: open / close element
-    function toggleElem(elem) {
-        const el = document.querySelector(elem);
-        if (el.getAttribute("aria-expanded")) {
-            el.classList.remove("expanded");
-            el.setAttribute("aria-expanded", false);
-            el.setAttribute("hidden", true);
-        } else {
-            el.classList.add("expanded");
-            el.setAttribute("aria-expanded", true);
-            el.removeAttribute("hidden");
-        }
-    }
-
-    ////////////////////////////////////////
-    // DEBUGGING
+    // LOG SOMETHING TO THE CONSOLE
     function consoleLog(value, asDir) {
         if (asDir) {
             console.dir(value);
@@ -74,48 +25,96 @@ const utils = (function () {
         }
     }
 
-    // return
-    return {
-        addCSS      : addCSS,
-        consoleLog  : consoleLog,
-        innerHTML   : innerHTML,
-        refreshPage : refreshPage,
-        removeCSS   : removeCSS,
-        toggleCSS   : toggleCSS,
-        toggleElem  : toggleElem,
-        setElementAttribute: setElementAttribute,
+    // REMOVE CSS CLASS
+    function removeCSS(elem, css) {
+        document.querySelector(elem).classList.remove(css);
     }
+
+    // TOGGLE CSS CLASS
+    function toggleCSS(elem, css) {
+        document.querySelector(elem).classList.toggle(css);
+    }
+
+    // SET INNERHTML
+    function innerHTML(elem, string) {
+        document.querySelector(elem).innerHTML = string;
+    }
+
+    // SET ELEMENT ATTRIBUTES
+    function setElementAttribute(elem, attr, value) {
+        document.querySelector(elem).setAttribute(attr, value);
+    }
+
+    // REFRESH PAGE
+    function refreshPage() {
+        scrollToTop();
+        history.go(0);
+    }
+
+    // SCROLL TO TOP OF PAGE
+    function scrollToTop(){
+        window.scrollTo(0,0);
+    }
+
+    // SHOW ELEM (SHOW / HIDE)
+    function showElem(id) {
+        scrollToTop();
+        const el = document.getElementById(id);
+        el.classList.remove("hidden");
+        el.removeAttribute("hidden");
+    }
+
+    // HIDE ELEM
+    function hideElem(id){
+        scrollToTop();
+        const el = document.getElementById(id);
+        el.classList.add("hidden");
+        el.setAttribute("hidden", true);
+    }
+
+    ////////////////////////////////////////
+    // register modals
+    Shiny.addCustomMessageHandler("addCSS", function (value) {
+        addCSS(value[0], value[1]);
+    });
+
+    Shiny.addCustomMessageHandler("consoleLog", function (value) {
+        consoleLog(value[0], value[1]);
+    });
+
+    Shiny.addCustomMessageHandler("innerHTML", function (value) {
+        innerHTML(value[0], value[1])
+    });
+
+    Shiny.addCustomMessageHandler("refreshPage", function (event) {
+        refreshPage();
+    });
+
+    Shiny.addCustomMessageHandler("removeCSS", function (value) {
+        removeCSS(value[0], value[1]);
+    });
+
+    Shiny.addCustomMessageHandler("setElementAttribute", function (value) {
+        setElementAttribute(value[0], value[1], value[2]);
+    });
+
+    Shiny.addCustomMessageHandler("toggleCSS", function (value) {
+        toggleCSS(value[0], value[1]);
+    });
+
+    Shiny.addCustomMessageHandler("hideElem", function (value) {
+        hideElem(value[0], value[1]);
+    });
+    
+    Shiny.addCustomMessageHandler("showElem", function (value) {
+        showElem(value[0], value[1]);
+    });
+
+    ////////////////////////////////////////
+    // one off functions
+    const runtime = document.getElementById('runtime');
+    runtime.addEventListener('input', function(){
+        Shiny.onInputChange('runtime',runtime.value, {priority: 'event'})
+    });
+
 })();
-
-// register handlers
-Shiny.addCustomMessageHandler("addCSS", function (value) { 
-    utils.addCSS(value[0], value[1]);
-});
-
-Shiny.addCustomMessageHandler("consoleLog", function (value) { 
-    utils.consoleLog(value[0], value[1]);
-});
-
-Shiny.addCustomMessageHandler("innerHTML", function (value) { 
-    utils.innerHTML(value[0], value[1]) 
-});
-
-Shiny.addCustomMessageHandler("refreshPage", function (event) { 
-    utils.refreshPage();
-});
-
-Shiny.addCustomMessageHandler("removeCSS", function (value) { 
-    utils.removeCSS(value[0], value[1]);
-});
-
-Shiny.addCustomMessageHandler("setElementAttribute", function (value) { 
-    utils.setElementAttribute(value[0], value[1], value[2]);
-});
-
-Shiny.addCustomMessageHandler("toggleCSS", function (value) { 
-    utils.toggleCSS(value[0], value[1]);
-});
-
-Shiny.addCustomMessageHandler("toggleElem", function (value) { 
-    utils.toggleElem(value[0], value[1]);
-});
