@@ -15,6 +15,6 @@ There are a handful of applications available and more on the way. The following
 | europeanCoffeeMap | viz on specialty coffee in europe | needs.updating |
 | NFLAttendenceRecords | viz on NFL attendence records | needs.updating |
 | grid_id_finder | search an find global higher institution data | complete |
-| runneR | enter and viz running data | needs.updating |
+| runneR | enter and viz running data | complete |
 | travelAdventures | viz on travels | needs.updating | 
 
