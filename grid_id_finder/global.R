@@ -2,7 +2,7 @@
 #' FILE: global.R
 #' AUTHOR: David Ruvolo
 #' CREATED: 2018-05-24
-#' MODIFIED: 2019-11-11
+#' MODIFIED: 2020-05-22
 #' PURPOSE: global
 #' PACKAGES: see below
 #' STATUS: working
@@ -15,7 +15,7 @@ options(stringsAsFactors = FALSE)
 suppressPackageStartupMessages(library(shiny))
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(DT))
-suppressPackageStartupMessages(library(modules))
+suppressPackageStartupMessages(library(browsertools))
 
 # utils
 source("utils/function_1_gridQuery.R")

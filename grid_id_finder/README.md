@@ -29,13 +29,14 @@ The `grid_query` shiny app project is structured in the following way.
 ```r
 grid/
     + data /              # raw grid dataset, merged, and cleaned
-    + scripts /           # scripts for arriving at main data
+        + scripts /           # scripts for arriving at main data
     + utils /             # functions + handlers
     + www/                # assets for shiny app
         + assets/         # location of clipboard.js
         + css/            # css file for app
-        + docs/           # location of the help page (rmarkdown)
-    + app.R               # shiny app
+    + ui.R                # shiny app
+    + server.R            # shiny app
+    + global.R            # shiny app
     + grid.Rproj          # R project
 ```
 
@@ -45,7 +46,6 @@ The main files that are used for the shiny app are:
 - `server.R`: backend 
 - `global.R`: central script for loading data, libraries, functions, etc.
 - `data/grid_merged.RDS`: final reshaped grid data in R file format (loc: `data/`)
-- `www/docs/README.Rmd`: rmarkdown file that serves as the help page (this doc)
 
 **NOTE**
 
@@ -56,7 +56,8 @@ In this release, I included a sample of the full `grid_merged.RDS` data file (10
 The app is built in R using shiny. At a minimum you will need to [install R](https://cran.r-project.org/) and the following R packages (run the following line in the R console). 
 
 ```r
-install.packages(c("shiny","tidyverse", "shinyjs","knitr","DT","lubridate"),dependencies = TRUE)
+install.packages(c("shiny","tidyverse", "shinyjs","knitr","DT","lubridate"))
+devtools::install_github("davidruvolo51/browsertools")
 ```
 
 Rstudio isn't required, but recommended. You can either work from the shared drive or make a copy to your machine work from that.
