@@ -2,25 +2,24 @@
 #' FILE: server.R
 #' AUTHOR: David Ruvolo
 #' CREATED: 2019-01-27
-#' MODIFIED: 2019-11-14
+#' MODIFIED: 2020-05-22
 #' PURPOSE: handle all user input and viz
 #' PACKAGES: tbd
 #' STATUS: in.progress
 #' COMMENTS: NA
 #'//////////////////////////////////////////////////////////////////////////////
-#' GLOBAL OPTIONS:
-options(stringsAsFactors = FALSE)
 server <- function(input, output, session) {
-    
-    source("scripts/data_01_summarize.R")
+
+    browsertools::debug()
 
     # send values to ui via handlers
-    js$innerHTML(elem = "#distance-tot", string = runData$highlights$dist_tot, session = session)
-    js$innerHTML(elem = "#distance-avg", string = runData$highlights$dist_avg, session = session)
-    js$innerHTML(elem = "#days-total", string = runData$highlights$days, session = session)
-    js$innerHTML(elem = "#days-run-total", string = runData$highlights$runningDays, session = session)
-    js$innerHTML(elem = "#days-run-week", string = runData$highlights$week_avg, session = session)
-    js$innerHTML(elem = "#days-run-month", string = runData$highlights$month_avg, session = session)
+    source("scripts/data_01_summarize.R")
+    browsertools::inner_html(elem = "#distance-tot", string = runData$highlights$dist_tot)
+    browsertools::inner_html(elem = "#distance-avg", string = runData$highlights$dist_avg)
+    browsertools::inner_html(elem = "#days-total", string = runData$highlights$days)
+    browsertools::inner_html(elem = "#days-run-total", string = runData$highlights$runningDays)
+    browsertools::inner_html(elem = "#days-run-week", string = runData$highlights$week_avg)
+    browsertools::inner_html(elem = "#days-run-month", string = runData$highlights$month_avg)
 
     # render charts
     source("scripts/data_02_visualize.R")
@@ -30,34 +29,42 @@ server <- function(input, output, session) {
     output$reasonsNotRun <- renderHighchart({ viz$reasonsNotRun })
     output$timeStartRun <- renderHighchart({ viz$timeStartRun })
 
-    #'//////////////////////////////////////////////////////////////////////////////
+    #'//////////////////////////////////////
 
     # render charts based on radio button input
     observe({
-        # default = days
+        #' default = days
         if (input$distanceToggle == "days") {
-            output$distBy <- renderHighchart({ viz$distanceByDay })
+            output$distBy <- renderHighchart({
+                viz$distanceByDay
+            })
         }
 
-        # 'on' = distance
+        #' 'on' = distance
         if (input$distanceToggle == "months") {
-            output$distBy <- renderHighchart({ viz$distanceByMonth })
+            output$distBy <- renderHighchart({
+                viz$distanceByMonth
+                })
         }
     })
 
     observe({
         # default runs
-        if(input$binToggle == "runs"){
-            output$distanceBinned <- renderHighchart({ viz$runsByDistanceBinned })
+        if(input$binToggle == "runs") {
+            output$distanceBinned <- renderHighchart({
+                viz$runsByDistanceBinned
+            })
         }
-        
+
         # default average time by bin
-        if(input$binToggle == "time"){
-            output$distanceBinned <- renderHighchart({ viz$timeByDistanceBinned })
+        if(input$binToggle == "time") {
+            output$distanceBinned <- renderHighchart({
+                viz$timeByDistanceBinned
+            })
         }
     })
-    
-    #'//////////////////////////////////////////////////////////////////////////////
+
+    #'//////////////////////////////////////
     # Event: newEnty ----
     # process new entry button click
 
@@ -65,29 +72,53 @@ server <- function(input, output, session) {
 
         # send binary to js file to determine which entry form to display
         if (max(responses$date) == format(Sys.Date(), "%Y-%m-%d")) {
-            js$hideElem(id="main", session=session)
-            js$showElem(id = "dialog_logged_done", session=session)
+            browsertools::hide_elem(
+                elem = "#main",
+                css = "hidden"
+            )
+            browsertools::show_elem(
+                elem = "#dialog_logged_done",
+                css = "hidden"
+            )
         } else {
-            js$hideElem(id="main", session=session)
-            js$showElem(id = "dialog_run_initial", session = session)
+            browsertools::hide_elem(
+                elem = "#main",
+                css = "hidden"
+            )
+            browsertools::show_elem(
+                elem = "#dialog_run_initial",
+                css = "hidden"
+            )
         }
 
-        # run = "no"
+        #' run = "no"
         observeEvent(input$no, {
-            js$hideElem(id = "dialog_run_initial", session = session)
-            js$showElem(id = "dialog_run_no", session = session)
+            browsertools::hide_elem(
+                elem = "#dialog_run_initial",
+                css = "hidden"
+            )
+            browsertools::show_elem(
+                elem = "#dialog_run_no",
+                css = "hidden"
+            )
 
             # form action = cancel
             observeEvent(input$`form-no-cancel`, {
-                js$hideElem(id="dialog_run_no", session = session)
-                js$showElem(id="main", session = session)
-            },ignoreInit=TRUE)
+                browsertools::hide_elem(
+                    elem = "#dialog_run_no",
+                    css = "hidden"
+                )
+                browsertools::show_elem(
+                    elem = "#main",
+                    css = "hidden"
+                )
+            }, ignoreInit = TRUE)
 
             # form action = submit
             observeEvent(input$`form-no-submit`, {
-                js$consoleLog(value="no", session=session)
 
                 # build data
+                browsertools::console_log(as.character(input$`no-reason-run`))
                 newData <- file$blankDF()
                 newData$country <- profile$country
                 newData$date <- format(Sys.Date(), "%Y-%m-%d")
@@ -96,14 +127,27 @@ server <- function(input, output, session) {
                 newData$time_logged <- Sys.time()
 
                 # save data
-                saveRDS(rbind(responses, newData), "data/running_data.RDS")
+                # saveRDS(rbind(responses, newData), "data/running_data.RDS")
 
                 # show completed modal
-                js$hideElem(id="dialog_run_no", session=session)
-                js$showElem(id="dialog_logged_complete", session=session)
+                #js$hideElem(id="dialog_run_no", session=session)
+                #js$showElem(id="dialog_logged_complete", session=session)
+                browsertools::hide_elem(
+                    elem = "#dialog_run_no",
+                    css = "hidden"
+                )
+                browsertools::show_elem(
+                    elem = "#dialog_logged_complete",
+                    css = "hidden"
+                )
+                shiny::updateSelectInput(
+                    session = session,
+                    inputId = "no-reason-run",
+                    selected = NULL
+                )
 
-            },ignoreInit=TRUE)
-        }, ignoreInit=TRUE)
+            },ignoreInit = TRUE)
+        }, ignoreInit = TRUE)
 
         # run = "yes"
         observeEvent(input$yes, {
@@ -134,26 +178,25 @@ server <- function(input, output, session) {
                 newData$time_run_start <- ifelse(input$runtime == "", NA, paste0("12/31/2099 ",input$runtime))
 
                 # save data
-                saveRDS(rbind(responses, newData), "data/running_data.RDS")
+                # saveRDS(rbind(responses, newData), "data/running_data.RDS")
 
                 # show completed modal
                 js$hideElem(id="dialog_run_yes", session=session)
                 js$showElem(id="dialog_logged_complete", session=session)
 
-            },ignoreInit=TRUE)
-        },ignoreInit=TRUE)
+            },ignoreInit = TRUE)
+        },ignoreInit = TRUE)
     }, ignoreInit = TRUE)
 
     # event for logged complete
     observeEvent(input$loggedComplete, {
         js$hideElem(id="dialog_logged_complete", session=session)
         js$showElem(id="main", session=session)
-    }, ignoreInit=TRUE)
+    }, ignoreInit = TRUE)
     
     # event for already logged
     observeEvent(input$`btn-back`, {
         js$hideElem(id="dialog_logged_done", session=session)
         js$showElem(id="main", session=session)
-    }, ignoreInit=TRUE)
-
+    }, ignoreInit = TRUE)
 }
