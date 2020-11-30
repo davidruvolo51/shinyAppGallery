@@ -1,0 +1,106 @@
+html, body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16pt;
+    padding: 0;
+    margin: 0;
+}
+
+h1, h2 {
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    margin-bottom: 12px;
+
+}
+
+p {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 16px;
+    line-height: 1.8;
+}
+
+header, main {
+    padding: 0;
+    margin: 0;
+}
+
+header {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #353535;
+    z-index: 3;
+    padding: 16px 0;
+}
+
+header h1 {
+    color: #f0f0f0;
+    font-size: 11pt;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 58px;
+    padding: 32px 0;
+}
+
+.datatable thead .column-1 {
+    text-align: center;
+}
+
+.bird-profile {
+    display: block;
+    border-radius: 50%;
+    width: 65px;
+    height: 65px;
+    margin: 0;
+    background-color: #bdbdbd;
+}
+
+.bird-name-common {
+    color: #4762a9;
+    text-align: center;
+    font-size: 14pt;
+    text-decoration: none;
+    box-shadow: inset 0 -1px 0 0 #4762a9;
+}
+
+.bird-name-sci {
+    display: block;
+    color: #55575a;
+    padding: 0 2px;
+    font-style: italic;
+}
+
+@media (min-width: 972px) {
+    main {
+        max-width: 972px;
+    }
+
+    .bird-name-sci,
+    .bird-name-common {
+        text-align: left;
+    }
+
+    .bird-profile {
+        margin: 0 auto;
+    }
+
+    .datatable .column-2 {
+        text-align: left;
+    }
+    .datatable .column-3,
+    .datatable .column-4 {
+        text-align: right;
+    }
+}
