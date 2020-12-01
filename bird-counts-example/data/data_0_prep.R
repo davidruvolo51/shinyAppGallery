@@ -2,14 +2,13 @@
 #' FILE: data_0_prep.R
 #' AUTHOR: David Ruvolo
 #' CREATED: 2020-03-15
-#' MODIFIED: 2020-03-15
+#' MODIFIED: 2020-12-01
 #' PURPOSE: prep data for example applicatino
-#' STATUS: in.progress
+#' STATUS: working
 #' PACKAGES: dplyr
 #' COMMENTS: data comes from birdata explorer:
 #' https://birdata.birdlife.org.au/explore. Download the species list
 #' ////////////////////////////////////////////////////////////////////////////
-options(stringsAsFactors = FALSE)
 
 # pkgs
 suppressPackageStartupMessages(library(tidyverse))
