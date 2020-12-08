@@ -32,7 +32,8 @@ ui <- tagList(
                 class = "block-content",
                 tags$h1("TSA Allegations of Misconduct Data Visualization"),
                 tags$h2(
-                    "Allegations of Federal Air Marshall Misconduct from 2002 - 2012"
+                    "Allegations of Federal Air Marshall Misconduct ",
+                    "from 2002 - 2012"
                 ),
                 tags$a(
                     href = "#introduction",
@@ -103,7 +104,7 @@ ui <- tagList(
                     "Click on point on the map, and then click 'View Report' ",
                     "for more information."
                 ),
-                leafletOutput("airportMap", width = "100%"),
+                mod_leaflet_ui(inputId = "airport_map"),
                 tags$button(
                     id = "moreInfo",
                     class = "shiny-bound-input action-button",
@@ -138,17 +139,15 @@ ui <- tagList(
                     class = "block",
                     tags$div(
                         class = "block-content",
-                        # Summary of ___ Field Office
-                        tags$h2(id = "report-title"),
-                        # location, code, lat, lng
-                        tags$p(id = "report-office-meta"),
+                        report_office_title(id = "fo-title"),
+                        report_office_summary(id = "fo-meta"),
                         # table: summary of allegations
                         # total allegations,
                         # year range (from - to)
                         # avg. allegations per year
                         # year with fewest allegations: year and count
                         # year with highest allegations: year and count
-                        tags$div(id = "report-office-summary-table"),
+                        report_office_table(id = "fo-table"),
                         tags$a(
                             class = "",
                             href = "",
@@ -161,8 +160,10 @@ ui <- tagList(
                     class = "block",
                     tags$div(
                         class = "block-content",
-                        # how does __ rank among other offices?
-                        tags$h2(id = "report-ranking-title"),
+                        tags$h2(
+                            "How does this office rank among others in",
+                            "terms of allegations"
+                        ),
                         plotOutput("rankingPlot"),
                         tags$a(
                             href = "",
@@ -178,20 +179,21 @@ ui <- tagList(
                         class = "block-content flex flex-50x50 flex-header-row",
                         tags$div(
                             tags$h2(
-                                "What were the most frequent allegations and how were they resolved?"
+                                "What were the most frequent allegations ",
+                                "and how were they resolved?"
                             )
                         ),
                         # allegations
                         tags$div(
                             class = "flex-child",
                             tags$h3("What are the common allegations?"),
-                            highchartOutput("allegationsHC")
+                            hc_column(id = "allegations-column-chart")
                         ),
                         # resolution
                         tags$div(
                             class = "flex-child",
                             tags$h3("What are the common resolutions?"),
-                            highchartOutput("resolutionsHC")
+                            hc_column(id = "resolutions-column-chart")
                         ),
                         tags$a(
                             class = "btn-style-next",

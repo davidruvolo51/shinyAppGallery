@@ -11,11 +11,11 @@
 
 app_server <- function(input, output, session) {
     tsa <- golem::get_golem_options("data")
+    tsa_sum_df <- golem::get_golem_options("summary_df")
 
     # init vals
     map_click <- reactiveVal()
-    click <- mod_leaflet_server(data = tsa)
-    map_click(click)
+    map_click(mod_leaflet_server(data = tsa)$id)
 
     selection_df <- reactive({
         if (is.null(map_click())) {
@@ -29,172 +29,48 @@ app_server <- function(input, output, session) {
     #' ObserveEvent for Button Click
     observeEvent(input$moreInfo, {
 
-        # move to report
-        shinyjs::runjs("document.getElementById('report').scrollIntoView();")
-
-        #'////////////////////////////////////////
-        # Send Stats to UI
-
         # get summary data
-        info <- tsaSUM[tsaSUM$codes == unique(selectionDF()$Field.Office), ]
-        title <- info$names
-        shinyjs::html(id = "selected-fo-title", html = title)
-
-        # send location
-        shinyjs::html(
-            id = "selected-fo-location",
-            paste0(info$city, ", ", info$state)
+        info <- tsa_sum_df[
+            tsa_sum_df$codes == unique(selection_df()$Field.Office),
+        ]
+        report_office_title_server(id = "", title = info$names)
+        report_office_summary(
+            id = "fo-title",
+            city = info$city,
+            state = info$state,
+            code = info$codes,
+            lat = info$lat,
+            lng = info$lng
         )
-        shinyjs::html(id = "selected-fo-lat", info$lat)
-        shinyjs::html(id = "selected-fo-lng", info$lng)
-
-        # send code
-        shinyjs::html(id = "selected-fo-code-1", info$codes)
-        shinyjs::html(id = "selected-fo-code-2", info$codes)
-        shinyjs::html(id = "selected-fo-code-3", info$codes)
-
-
-        # count of entries
-        count <- NROW(selectionDF())
-        shinyjs::html(id = "selected-fo-count", count)
-
-
-        # summary by year
-        years <- selectionDF() %>%
-            group_by(Year.Cased.Opened) %>%
-            summarize(count = n())
-
-        # avg
-        years_mean <- round(mean(years$count), 2)
-        years_mean_out <- ifelse(
-            years_mean == 0,
-            "no cases",
-            ifelse(
-                years_mean == 1, "1 case",
-                paste0(years_mean, " cases")
-            )
-        )
-
-        # min
-        years_min <- years %>%
-            top_n(-1)
-        years_min_out <- ifelse(
-            info$code == "DFT",
-            "Each year had 1 case",
-            ifelse(
-                years_min$count == 0,
-                "no cases",
-                ifelse(
-                    years_min$count == 1,
-                    "1 case",
-                    paste0(years_min$count, " cases")
-                )
-            )
-        )
-        years_min_yr_out <- ifelse(
-            info$codes == "DFT",
-            "",
-            ifelse(
-                NROW(years_min) == 1,
-                years_min$Year.Cased.Opened,
-                ifelse(
-                    NROW(years_min) == 2,
-                    paste0(
-                        unique(years_min$Year.Cased.Opened),
-                        collapse = " and "
-                    ),
-                    paste0(
-                        unique(years_min$Year.Cased.Opened),
-                        collapse = ", "
-                    )
-                )
-            )
-        )
-        years_date_earliest <- min(years$Year.Cased.Opened)
-        years_date_recent <- max(years$Year.Cased.Opened)
-        years_range_out <- paste0(years_date_earliest, " - ", years_date_recent)
-
-        # max
-        years_max <- years %>% top_n(1)
-        years_max_out <- ifelse(
-            info$codes == "DFT",
-            "Each year had 1 case",
-            ifelse(
-                years_max$count == 0,
-                "no cases",
-                ifelse(
-                    years_max$count == 1,
-                    "1 case",
-                    paste0(years_max$count, " cases")
-                )
-            )
-        )
-        years_max_yr_out <- ifelse(
-            info$codes == "DFT",
-            "",
-            ifelse(
-                NROW(years_max) == 1,
-                years_max$Year.Cased.Opened,
-                ifelse(
-                    NROW(years_max) == 2,
-                    paste0(
-                        unique(years_max$Year.Cased.Opened),
-                        collapse = " and "
-                    ),
-                    paste0(
-                        unique(years_max$Year.Cased.Opened),
-                        collapse = ", "
-                    )
-                )
-            )
-        )
-
-        # send year data to ui
-        shinyjs::html(id = "selected-fo-year-range", html = years_range_out)
-        shinyjs::html(id = "selected-fo-year-avg", html = years_mean_out)
-        shinyjs::html(id = "selected-fo-year-min", html = years_min_out)
-        shinyjs::html(id = "selected-fo-year-max", html = years_max_out)
-        shinyjs::html(id = "selected-fo-year-min-yr", html = years_min_yr_out)
-        shinyjs::html(id = "selected-fo-year-max-yr", html = years_max_yr_out)
+        report_office_table_server(id = "fo-table", data = info)
 
         #'////////////////////////////////////////
         # create a summary of violations the selected object
-        selectionDF_sum <- reactive({
-
-            # summarize
-            tmp <- selectionDF() %>%
+        selection_df_sum <- reactive({
+            selection_df() %>%
                 group_by(Field.Office, Allegation) %>%
                 summarize(count = n()) %>%
-                ungroup()
+                ungroup() %>%
+                mutate(
+                    rate = sapply(count, function(x) {
+                        round(x / sum(count), 5) * 100
+                    })
+                )
 
-            # add rate
-            tmp$rate <- sapply(
-                tmp$count,
-                function(x) {
-                    round(x / sum(tmp$count), 5) * 100
-                }
-            )
-            tmp
         })
 
         #'////////////////////////////////////////
         # create a summary of dispositions based on the selected object
-        dispositionsDF <- reactive({
-
-            # summarize
-            tmp2 <- selectionDF() %>%
+        dispositions_df <- reactive({
+            selection_df() %>%
                 group_by(Field.Office, Final.Disposition) %>%
                 summarize(count = n()) %>%
-                ungroup()
-
-            # add rate
-            tmp2$rate <- sapply(
-                tmp2$count,
-                function(x) {
-                    round(x / sum(tmp2$count), 5) * 100
-                }
-            )
-            tmp2
+                ungroup() %>%
+                mutate(
+                    rate = sapply(count, function(x) {
+                        round(x / sum(count), 5) * 100
+                    })
+                )
         })
 
         #'////////////////////////////////////////
@@ -253,76 +129,43 @@ app_server <- function(input, output, session) {
 
         #'////////////////////////////////////////
         # Top 10 Allegations Chart
-        output$allegationsHC <- renderHighchart({
-
-            # grab top 10
-            topAllegations <- selectionDF_sum() %>%
+        selection_top_allegations <- reactive({
+            selection_df_sum() %>%
                 top_n(10) %>%
                 arrange(-count)
-
-            # plot
-            highchart() %>%
-                hc_xAxis(categories = topAllegations$Allegation) %>%
-                hc_yAxis(tickInterval = 5) %>%
-                hc_add_series(
-                    topAllegations,
-                    hcaes(x = Allegation, y = count),
-                    type = "bar",
-                    name = "Allegations",
-                    color = "#700548"
-                ) %>%
-                hc_tooltip(
-                    crosshairs = TRUE,
-                    shared = FALSE,
-                    headerFormat = "{point.x}<br>",
-                    pointFormat = "Count: {point.y}",
-                    shadow = TRUE,
-                    backgroundColor = "white",
-                    padding = 12,
-                    borderWidth = 1.5,
-                    borderRadius = 10
-                )
         })
+
+        hc_column_server(
+            id = "allegations-column",
+            data = selection_top_allegations,
+            x = Allegation,
+            y = count,
+            name = "Allegations",
+            color = "#700548"
+        )
 
         #'////////////////////////////////////////
         # Top 10 Resolutions Chart
-        output$resolutionsHC <- renderHighchart({
-
-            # grab top 10
-            topResolutions <- dispositionsDF() %>%
+        selection_top_resolutions <- reactive({
+            selection_df_sum() %>%
                 arrange(-count) %>%
                 top_n(10)
-
-            # plot
-            highchart() %>%
-                hc_xAxis(categories = topResolutions$Final.Disposition) %>%
-                hc_yAxis(tickInterval = 5) %>%
-                hc_add_series(
-                    topResolutions,
-                    hcaes(x = Final.Disposition, y = count),
-                    type = "bar",
-                    name = "Resolution",
-                    color = "#449DD1"
-                ) %>%
-                hc_tooltip(
-                    crosshairs = TRUE,
-                    shared = FALSE,
-                    headerFormat = "{point.x}<br>",
-                    pointFormat = "Count: {point.y}",
-                    shadow = TRUE,
-                    backgroundColor = "white",
-                    padding = 12,
-                    borderWidth = 1.5,
-                    borderRadius = 10
-                )
         })
+        hc_column_server(
+            id = "resolutions-column-chart",
+            data = selection_top_resolutions,
+            x = Final.Disposition,
+            y = count,
+            name = "Resolutions",
+            color = "#449DD1"
+        )
 
         #'////////////////////////////////////////
         # Allegations over time compared with all Field Offices
         output$allegationsTimeHC <- renderHighchart({
 
             # summary by POSIXct year
-            select_year_sum <- selectionDF() %>%
+            select_year_sum <- selection_df() %>%
                 group_by(date = paste0(Year.Cased.Opened, "-01", "-01")) %>%
                 summarize(count = n())
 
@@ -392,7 +235,7 @@ app_server <- function(input, output, session) {
         output$fieldOfficeSankey <- renderSankeyNetwork({
 
             # grab selected data and summarize by allegation and disposition
-            sumDF <- selectionDF() %>%
+            sumDF <- selection_df() %>%
                 group_by(Allegation, Final.Disposition) %>%
                 count()
 

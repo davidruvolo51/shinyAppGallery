@@ -23,6 +23,7 @@ hc_column <- function(id) {
 #'
 #' Create a column chart using the Highcharts R package
 #'
+#' @param id output id
 #' @param data input data
 #' @param x xaxis variable; must be categorical
 #' @param y yaxis variable (continuous)
@@ -30,7 +31,7 @@ hc_column <- function(id) {
 #' @param color color for the bars (default: `#700548`)
 #'
 #' @noRd
-hc_column_server <- function(data, x, y, name, color = "#700548") {
+hc_column_server <- function(id, data, x, y, name, color = "#700548") {
     ns <- session$ns
     output$`hc-column` <- renderHighchart({
         highchart() %>%
