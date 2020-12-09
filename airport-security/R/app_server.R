@@ -12,6 +12,7 @@
 app_server <- function(input, output, session) {
     tsa <- golem::get_golem_options("data")
     tsa_sum_df <- golem::get_golem_options("summary_df")
+    tsa_sum_yr <- golem::get_golem_options("summary_df_years")
 
     # init vals
     map_click <- reactiveVal()
@@ -75,57 +76,11 @@ app_server <- function(input, output, session) {
 
         #'////////////////////////////////////////
         # Ranking of Selected FO
-        output$rankingPlot <- renderPlot({
-            tsaSUM %>%
-                arrange(tot.cases) %>%
-                mutate(
-                    codes = factor(codes, codes),
-                    color = ifelse(codes == info$codes, "target", "default")
-                ) %>%
-                ggplot(aes(x = codes, y = tot.cases, fill = color)) +
-                geom_bar(stat = "identity") +
-                scale_fill_manual(
-                    values = c(
-                        target = "#700548",
-                        default = "#857a74"
-                    )
-                ) +
-                scale_y_continuous(
-                    breaks = seq(0, max(tsaSUM$tot.cases), by = 50),
-                    expand = c(0.01, 0)
-                ) +
-                xlab(NULL) + ylab("Count") +
-                theme(
-                    legend.position = "none",
-                    panel.background = element_blank(),
-                    axis.line.x = element_line(
-                        color = "#525252",
-                        size = .5
-                    ),
-                    axis.line.y = element_line(
-                        color = "#525252",
-                        size = .5
-                    ),
-                    panel.grid.major = element_line(
-                        color = "#bdbdbd",
-                        size = 0.15
-                    ),
-                    panel.grid.minor = element_blank(),
-                    axis.ticks = element_line(
-                        color = "#bdbdbd",
-                        size = 0.15
-                    ),
-                    axis.title = element_text(
-                        color = "#525252",
-                        size = 14,
-                        margin = margin(r = 10, unit = "pt")
-                    ),
-                    axis.text = element_text(
-                        size = 11,
-                        color = "#525252"
-                    )
-                )
-        })
+        ranking_viz_server(
+            id = "",
+            data = tsa_sum_df,
+            fo_id = info$codes
+        )
 
         #'////////////////////////////////////////
         # Top 10 Allegations Chart
@@ -169,7 +124,7 @@ app_server <- function(input, output, session) {
 
         # filter tsaYRS df for years that match selected data
         # not all field offices have records for all years
-        tsaSubset <- tsaYRS %>%
+        tsa_subset <- tsa_sum_yr %>%
             filter(
                 date >= min(select_year_sum$date),
                 date <= max(select_year_sum$date)
