@@ -162,143 +162,35 @@ app_server <- function(input, output, session) {
 
         #'////////////////////////////////////////
         # Allegations over time compared with all Field Offices
-        output$allegationsTimeHC <- renderHighchart({
+        # summary by POSIXct year
+        select_year_sum <- selection_df() %>%
+            group_by(date = paste0(Year.Cased.Opened, "-01", "-01")) %>%
+            summarize(count = n())
 
-            # summary by POSIXct year
-            select_year_sum <- selection_df() %>%
-                group_by(date = paste0(Year.Cased.Opened, "-01", "-01")) %>%
-                summarize(count = n())
+        # filter tsaYRS df for years that match selected data
+        # not all field offices have records for all years
+        tsaSubset <- tsaYRS %>%
+            filter(
+                date >= min(select_year_sum$date),
+                date <= max(select_year_sum$date)
+            )
 
-            # filter tsaYRS df for years that match selected data
-            # not all field offices have records for all years
-            tsaSubset <- tsaYRS %>%
-                filter(
-                    date >= min(select_year_sum$date),
-                    date <= max(select_year_sum$date)
-                )
-
-            highchart() %>%
-                hc_chart(zoomType = "xy") %>%
-                hc_xAxis(
-                    type = "dateTime",
-                    categories = format(as.POSIXct(select_year_sum$date), "%Y")
-                ) %>%
-                hc_yAxis(title = list(text = "Count")) %>%
-
-                # group avg
-                hc_add_series(
-                    type = "spline",
-                    data = round(tsaSubset$avg, 2),
-                    marker=list(
-                        symbol = "circle",
-                        lineWidth = "1px",
-                        fillColor = "rgba(131,122,117,0.3)",
-                        lineColor = "#837A75"
-                    ),
-                    backgroundColor = "white",
-                    color = "#837A75",
-                    name = "All FOs Combined"
-                ) %>%
-
-                # selection
-                hc_add_series(
-                    type = "spline",
-                    data = select_year_sum$count,
-                    marker = list(
-                        symbol = "circle",
-                        lineWidth = "1px",
-                        fillColor = "rgba(112,5,72,0.3)",
-                        lineColor = "#700548"
-                    ),
-                    backgroundColor = "white",
-                    color = "#700548",
-                    name = "Field Office"
-                ) %>%
-
-                # tooltips
-                hc_tooltip(
-                    crosshairs = TRUE,
-                    shared = FALSE,
-                    headerFormat = "Year: {point.x}<br>",
-                    pointFormat = "Count: {point.y}",
-                    shadow = TRUE,
-                    backgroundColor = "white",
-                    padding = 12,
-                    borderWidth = 1.5,
-                    borderRadius = 10
-                )
-
-        }) # end highcart timeseries
+        hc_timeseries_server(
+            id = "",
+            data = select_year_sum,
+            x = "date",
+            y = "count",
+            bg_data = tsa_subset,
+            bg_yvar = "avg"
+        )
 
         #'////////////////////////////////////////
         # Resolutions of Allegations For Selected Field Office
-        output$fieldOfficeSankey <- renderSankeyNetwork({
-
-            # grab selected data and summarize by allegation and disposition
-            sumDF <- selection_df() %>%
-                group_by(Allegation, Final.Disposition) %>%
-                count()
-
-            # prepare nodes data
-            nodes <- data.frame(
-                name = unique(c(sumDF$Allegation, sumDF$Final.Disposition))
-            )
-            nodes$cat <- ifelse(
-                is.na(match(nodes$name,sumDF$Allegation)),
-                "target",
-                "source"
-            )
-
-            # prepare sum df by adding source and target vars
-            sumDF$source <- match(sumDF$Allegation, nodes$name) - 1
-            sumDF$target <- match(sumDF$Final.Disposition, nodes$name) - 1
-
-            # force as data.frame
-            sumDF <- data.frame(sumDF, stringsAsFactors = F)
-
-            # make sankey diagram
-            sankey <- sankeyNetwork(
-                Links = sumDF, Source = "source", Target = "target",
-                Value = "n", Nodes = nodes, nodeWidth = 0,
-                NodeGroup = "cat",
-                margin = list("right" = 175),
-                sinksRight = F,
-                fontSize = 10
-            )
-
-            # add render
-            sankeyOut <- onRender(
-                sankey,
-                'function(el, x) {
-                    // style labels and create an object
-                    labels = d3.selectAll(".node text")
-                        .style("cursor", "default")
-                        .style("font-family","monospace")
-                        .style("font-size","8pt")
-                        .attr("x", function(d) {
-                            // set label position based on group
-                            if(d.group == "source") {
-                                return "-6 - x.options.nodeWidth";
-                            } else {
-                                return "6 + x.options.nodeWidth";
-                            }
-                        })
-                        .attr("text-anchor", function(d) {
-                            // set label anchor based on group
-                            if(d.group == "source") {
-                                return "end";
-                            } else {
-                                return "start";
-                            }
-                        })
-
-                    // modify path colors
-                    paths = d3.selectAll("path.link")
-                        .style("stroke","rgb(112,5,72)")
-                        .style("stroke-opacity","0.1")
-                }'
-            )
-            sankeyOut
-        })
+        mod_sankey_server(
+            id = "",
+            data = selection_df(),
+            group = "Allegation",
+            value = "Final.Disposition",
+        )
     })
 }
