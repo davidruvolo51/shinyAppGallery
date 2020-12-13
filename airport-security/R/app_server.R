@@ -1,4 +1,4 @@
-#'//////////////////////////////////////////////////////////////////////////////
+#'/////////////////////////////////////////////////////////////////////////////
 #' FILE: server.R
 #' AUTHOR: David Ruvolo
 #' CREATED: 2018-04-07
@@ -7,35 +7,39 @@
 #' PACKAGES: see `app.R`
 #' STATUS: in progress
 #' COMMENTS: NA
-#'//////////////////////////////////////////////////////////////////////////////
-
+#'/////////////////////////////////////////////////////////////////////////////
 app_server <- function(input, output, session) {
-    tsa <- golem::get_golem_options("data")
-    tsa_sum_df <- golem::get_golem_options("summary_df")
-    tsa_sum_yr <- golem::get_golem_options("summary_df_years")
+    tsa <- golem::get_golem_options("tsa")
+    tsa_sum <- golem::get_golem_options("tsa_sum")
+    tsa_sum_yr <- golem::get_golem_options("tsa_sum_yr")
 
     # init vals
-    map_click <- reactiveVal()
-    map_click(mod_leaflet_server(data = tsa)$id)
+    map_click <- mod_leaflet_server(id = "airport_map", data = tsa_sum)
 
     selection_df <- reactive({
         if (is.null(map_click())) {
-            subset(tsa, Field.Office == "DEN") # return default opt
+            tsa %>%
+                filter(Field.Office == "DEN")
         } else {
-            tsa[tsa$Field.Office == map_click$id, ]
+            tsa %>%
+                filter(Field.Office == map_click()$id)
         }
     })
+    # observe({
+    #     print(selection_df() %>% head())
+    # })
 
     #'/////////////////////////////////////////////////////////////////////////
     #' ObserveEvent for Button Click
     observeEvent(input$moreInfo, {
+        browsertools::show_elem(elem = "#report")
 
         # get summary data
-        info <- tsa_sum_df[
-            tsa_sum_df$codes == unique(selection_df()$Field.Office),
+        info <- tsa_sum[
+            tsa_sum$codes == unique(selection_df()$Field.Office),
         ]
         report_office_title_server(id = "", title = info$names)
-        report_office_summary(
+        report_office_summary_server(
             id = "fo-title",
             city = info$city,
             state = info$state,
@@ -43,7 +47,7 @@ app_server <- function(input, output, session) {
             lat = info$lat,
             lng = info$lng
         )
-        report_office_table_server(id = "fo-table", data = info)
+        report_office_table_server(id = "fo-table", data = selection_df())
 
         #'////////////////////////////////////////
         # create a summary of violations the selected object
@@ -77,8 +81,8 @@ app_server <- function(input, output, session) {
         #'////////////////////////////////////////
         # Ranking of Selected FO
         ranking_viz_server(
-            id = "",
-            data = tsa_sum_df,
+            id = "fo-ranking",
+            data = tsa_sum,
             fo_id = info$codes
         )
 
@@ -91,7 +95,7 @@ app_server <- function(input, output, session) {
         })
 
         hc_column_server(
-            id = "allegations-column",
+            id = "fo-allegations-column",
             data = selection_top_allegations,
             x = Allegation,
             y = count,
@@ -107,7 +111,7 @@ app_server <- function(input, output, session) {
                 top_n(10)
         })
         hc_column_server(
-            id = "resolutions-column-chart",
+            id = "fo-resolutions-column",
             data = selection_top_resolutions,
             x = Final.Disposition,
             y = count,
@@ -131,7 +135,7 @@ app_server <- function(input, output, session) {
             )
 
         hc_timeseries_server(
-            id = "",
+            id = "fo-allegations-time",
             data = select_year_sum,
             x = "date",
             y = "count",
@@ -142,10 +146,10 @@ app_server <- function(input, output, session) {
         #'////////////////////////////////////////
         # Resolutions of Allegations For Selected Field Office
         mod_sankey_server(
-            id = "",
+            id = "fo-sankey",
             data = selection_df(),
             group = "Allegation",
-            value = "Final.Disposition",
+            value = "Final.Disposition"
         )
     })
 }

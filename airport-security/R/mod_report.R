@@ -2,7 +2,7 @@
 #' FILE: mod_report_title.R
 #' AUTHOR: David Ruvolo
 #' CREATED: 2020-12-07
-#' MODIFIED: 2020-12-07
+#' MODIFIED: 2020-12-12
 #' PURPOSE: generate report title
 #' STATUS: in.progress
 #' PACKAGES: NA
@@ -30,10 +30,14 @@ report_office_title <- function(id) {
 #'
 #' @noRd
 report_office_title_server <- function(id, structure, title) {
-    ns <- session$ns
-    browsertools::inner_html(
-        elem = paste0("#", ns("report-title")),
-        content = paste0("Summary of the ", title, " office")
+    moduleServer(
+        id,
+        function(input, output, session) {
+            browsertools::inner_html(
+                elem = paste0("#", NS("report-title", id)),
+                content = paste0("Summary of the ", title, " office")
+            )
+        }
     )
 }
 
@@ -60,14 +64,19 @@ report_office_summary <- function(id) {
 #'
 #' @noRd
 report_office_summary_server <- function(id, city, state, code, lat, lng) {
-    ns <- session$ns
-    browsertools::inner_html(
-        elem = paste0("#", ns("field-office-summary")),
-        content = tagList(
-            tags$span(city, ", ", state),
-            tags$span(code),
-            tags$span("(", lat, ",", lng, ")")
-        )
+    moduleServer(
+        id,
+        function(input, output, session) {
+            ns <- session$ns
+            browsertools::inner_html(
+                elem = paste0("#", NS("field-office-summary", id)),
+                content = tagList(
+                    tags$span(city, ", ", state),
+                    tags$span(code),
+                    tags$span("(", lat, ",", lng, ")")
+                )
+            )
+        }
     )
 }
 
@@ -80,7 +89,7 @@ report_office_summary_server <- function(id, city, state, code, lat, lng) {
 #' @noRd
 report_office_table <- function(id) {
     ns <- NS(id)
-    uiOutput(id = "field-office-datatable")
+    uiOutput(outputId = "field-office-datatable")
 }
 
 
@@ -91,51 +100,55 @@ report_office_table <- function(id) {
 #'
 #' @noRd
 report_office_table_server <- function(id, data) {
-    ns <- session$ns
+    moduleServer(
+        id,
+        function(input, output, session) {
+            # format cases function
+            format_cases <- function(x) {
+                case_when(
+                    x == 0 ~ "no cases",
+                    x == 1 ~ "1 case",
+                    x > 1 ~ paste0(x, " cases"),
+                    TRUE ~ NA_character_
+                )
+            }
 
-    # format cases function
-    format_cases <- function(x) {
-        case_when(
-            x == 0 ~ "no cases",
-            x == 1 ~ "1 case",
-            x > 1 ~ paste0(x, " cases"),
-            TRUE ~ NA
-        )
-    }
+            # summarize data by year
+            years <- data %>%
+                group_by(Year.Cased.Opened) %>%
+                summarize(count = n()) %>%
+                ungroup()
 
-    # summarize data by year
-    years <- data() %>%
-        group_by(Year.Cased.Opened) %>%
-        summarize(count = n())
+            # init summary object
+            d <- data.frame(
+                prop = c(
+                    "Total",
+                    "Year Range",
+                    "Avg. Cases by Year",
+                    "Fewest Cases",
+                    "Highest Cases"
+                ),
+                value = c(
+                    NROW(data()),
+                    paste0(
+                        min(years$Year.Cased.Opened),
+                        " - ",
+                        max(years$Year.Cased.Opened)
+                    ),
+                    format_cases(round(mean(years$count), 2)),
+                    format_cases(min(years$count)),
+                    format_cases(max(years$count))
+                )
+            )
 
-    # init summary object
-    d <- data.frame(
-        prop = c(
-            "Total",
-            "Year Range",
-            "Avg. Cases by Year",
-            "Fewest Cases",
-            "Highest Cases",
-        ),
-        value = c(
-            NROW(data()),
-            paste0(
-                min(years$Year.Cased.Opened),
-                " - ",
-                max(years$Year.Cased.Opened)
-            ),
-            format_cases(round(mean(years$count), 2)),
-            format_cases(min(years$count)),
-            format_cases(max(years$count))
-        )
+            # render table
+            output$`field-office-datatble` <- renderUI({
+                datatable(
+                    data = d,
+                    caption = "Summary of Allegations",
+                    classnames = "field-office-table"
+                )
+            })
+        }
     )
-
-    # render table
-    output$`field-office-datatble` <- renderUI({
-        datatable(
-            data = d,
-            caption = "Summary of Allegations",
-            classnames = "field-office-table"
-        )
-    })
 }
