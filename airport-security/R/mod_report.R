@@ -34,7 +34,7 @@ report_office_title_server <- function(id, structure, title) {
         id,
         function(input, output, session) {
             browsertools::inner_html(
-                elem = paste0("#", NS("report-title", id)),
+                elem = paste0("#", id, "-report-title"),
                 content = paste0("Summary of the ", title, " office")
             )
         }
@@ -67,9 +67,8 @@ report_office_summary_server <- function(id, city, state, code, lat, lng) {
     moduleServer(
         id,
         function(input, output, session) {
-            ns <- session$ns
             browsertools::inner_html(
-                elem = paste0("#", NS("field-office-summary", id)),
+                elem = paste0("#", id, "-field-office-summary"),
                 content = tagList(
                     tags$span(city, ", ", state),
                     tags$span(code),
@@ -129,7 +128,7 @@ report_office_table_server <- function(id, data) {
                     "Highest Cases"
                 ),
                 value = c(
-                    NROW(data()),
+                    NROW(data),
                     paste0(
                         min(years$Year.Cased.Opened),
                         " - ",
