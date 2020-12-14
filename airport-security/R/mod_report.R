@@ -88,7 +88,9 @@ report_office_summary_server <- function(id, city, state, code, lat, lng) {
 #' @noRd
 report_office_table <- function(id) {
     ns <- NS(id)
-    uiOutput(outputId = "field-office-datatable")
+    tagList(
+        uiOutput(ns("dt"))
+    )
 }
 
 
@@ -113,39 +115,47 @@ report_office_table_server <- function(id, data) {
             }
 
             # summarize data by year
-            years <- data %>%
-                group_by(Year.Cased.Opened) %>%
-                summarize(count = n()) %>%
-                ungroup()
+            years <- reactive({
+                data %>%
+                    ungroup() %>%
+                    group_by(Year.Cased.Opened) %>%
+                    summarize(count = n()) %>%
+                    ungroup()
+            })
 
             # init summary object
-            d <- data.frame(
-                prop = c(
-                    "Total",
-                    "Year Range",
-                    "Avg. Cases by Year",
-                    "Fewest Cases",
-                    "Highest Cases"
-                ),
-                value = c(
-                    NROW(data),
-                    paste0(
-                        min(years$Year.Cased.Opened),
-                        " - ",
-                        max(years$Year.Cased.Opened)
+            d <- reactive({
+                data.frame(
+                    prop = c(
+                        "Total",
+                        "Year Range",
+                        "Avg. Cases by Year",
+                        "Fewest Cases",
+                        "Highest Cases"
                     ),
-                    format_cases(round(mean(years$count), 2)),
-                    format_cases(min(years$count)),
-                    format_cases(max(years$count))
+                    value = c(
+                        NROW(data),
+                        paste0(
+                            min(years()$Year.Cased.Opened),
+                            " - ",
+                            max(years()$Year.Cased.Opened)
+                        ),
+                        format_cases(round(mean(years()$count), 2)),
+                        format_cases(min(years()$count)),
+                        format_cases(max(years()$count))
+                    )
                 )
-            )
+            })
 
             # render table
-            output$`field-office-datatble` <- renderUI({
-                datatable(
-                    data = d,
-                    caption = "Summary of Allegations",
-                    classnames = "field-office-table"
+            observe({
+                browsertools::inner_html(
+                    elem = paste0("#", id, "-dt"),
+                    content = datatable(
+                        data = d(),
+                        caption = "Summary of Allegations",
+                        classnames = "field-office-table"
+                    )
                 )
             })
         }

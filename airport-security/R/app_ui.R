@@ -98,7 +98,8 @@ app_ui <- function(request) {
                 class = "block map-block",
                 tags$div(
                     id = "map-wrapper",
-                    class = "content-wrapper",
+                    class = "block-content",
+                    tags$h2("Select a field office"),
                     tags$p(
                         "Click on point on the map, and then click ",
                         "'View Report'  for more information."
@@ -174,9 +175,9 @@ app_ui <- function(request) {
                     # allegations over time
                     tags$section(
                         id = "report-office-allegations-ts",
-                        class = "section",
+                        class = "block",
                         tags$div(
-                            class = "section-content",
+                            class = "block-content",
                             tags$h2("How do allegations change over time?"),
                             hc_column(id = "fo-allegations-time"),
                             action_link(to = "#report-resolutions")

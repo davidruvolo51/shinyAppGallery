@@ -38,9 +38,9 @@ app_server <- function(input, output, session) {
         info <- tsa_sum[
             tsa_sum$codes == unique(selection_df()$Field.Office),
         ]
-        report_office_title_server(id = "", title = info$names)
+        report_office_title_server(id = "fo-title", title = info$names)
         report_office_summary_server(
-            id = "fo-title",
+            id = "fo-meta",
             city = info$city,
             state = info$state,
             code = info$codes,
