@@ -16,7 +16,7 @@
 #' @noRd
 hc_column <- function(id) {
     ns <- NS(id)
-    highchartOutput(outputId = ns("hc_column"))
+    highchartOutput(ns("hc_column"))
 }
 
 #' hc_column_server
@@ -35,6 +35,8 @@ hc_column_server <- function(id, data, x, y, name, color = "#700548") {
     moduleServer(
         id,
         function(input, output, session) {
+            print(id)
+            print(head(data))
             output$hc_column <- renderHighchart({
                 highchart() %>%
                     hc_xAxis(categories = data[, x]) %>%
