@@ -1,13 +1,22 @@
 :root {
-    --gray-050: #F0F0F0; /* cultured */
-    --gray-100: #D1D1D1; /* light-gray */
-    --gray-200: #B2B2B2; /* silver-chalice */
-    --gray-300: #939393; /* spanish-gray */
-    --gray-400: #737373; /* sonic-silver */
-    --gray-500: #545454; /* davys-grey */
-    --gray-600: #353535; /* jet */
-    --primary: #700548; /* pansy purple */
-    --secondary: #379392; /* viridian green */
+    --gray-050: #F0F0F0;
+    /* cultured */
+    --gray-100: #D1D1D1;
+    /* light-gray */
+    --gray-200: #B2B2B2;
+    /* silver-chalice */
+    --gray-300: #939393;
+    /* spanish-gray */
+    --gray-400: #737373;
+    /* sonic-silver */
+    --gray-500: #545454;
+    /* davys-grey */
+    --gray-600: #353535;
+    /* jet */
+    --primary: #700548;
+    /* pansy purple */
+    --secondary: #379392;
+    /* viridian green */
 }
 
 html, body {
@@ -117,11 +126,9 @@ a {
     .block .block-content {
         max-width: 972px;
     }
-
     .flex.flex-header-row {
         flex: 2 0px;
     }
-
     .flex.flex-header-row .flex-child:nth-child(1) {
         flex-grow: 2;
         order: 1;
@@ -131,5 +138,88 @@ a {
     }
     .flex.flex-header-row .flex-child:nth-child(1) {
         order: 3;
+    }
+}
+
+.datatable {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    border-spacing: 0;
+    text-align: left;
+    font-size: 13pt
+}
+
+.datatable caption {
+    text-align: left;
+    font-size: 16pt;
+    margin: 12px 0;
+    color: #252525;
+    font-weight: 600
+}
+
+.datatable thead tr th {
+    font-weight: 600;
+    padding: 4px 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 1px solid #252525;
+    color: #252525
+}
+
+.datatable thead tr th[data-col-align=right] {
+    text-align: right
+}
+
+.datatable tbody tr td, .datatable tbody tr th {
+    font-weight: 400;
+    padding: 16px 12px
+}
+
+.datatable tbody tr td .hidden__colname, .datatable tbody tr th .hidden__colname {
+    display: none
+}
+
+.datatable tbody tr td[data-col-align=right], .datatable tbody tr th[data-col-align=right] {
+    text-align: right
+}
+
+.datatable.row__highlighting tbody tr:nth-child(2n) {
+    background-color: #f6f6f6
+}
+
+.datatable.caption__side__top caption {
+    caption-side: top
+}
+
+.datatable.caption__side__bottom caption {
+    caption-side: bottom
+}
+
+.datatable .datatable__responsive tbody tr td[data-col-align=right], .datatable .datatable__responsive tbody tr th[data-col-align=right], .datatable .datatable__responsive thead tr th[data-col-align=right] {
+    text-align: right
+}
+
+@media (max-width:812px) {
+    .datatable__responsive thead {
+        position: absolute;
+        clip: rect(1px 1px 1px 1px);
+        clip: rect(1px, 1px, 1px, 1px);
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        white-space: nowrap
+    }
+    .datatable__responsive tbody tr td, .datatable__responsive tbody tr th {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 4px 0 4px 12px
+    }
+    .datatable__responsive tbody tr td .hidden__colname, .datatable__responsive tbody tr th .hidden__colname {
+        display: inline-block;
+        clip: auto;
+        width: 50%;
+        height: 100%;
+        text-overflow: ellipsis
     }
 }
