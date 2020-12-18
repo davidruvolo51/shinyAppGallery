@@ -15,8 +15,7 @@
 #'
 #' @noRd
 mod_leaflet_ui <- function(id) {
-    ns <- NS(id)
-    leafletOutput(ns("map"), width = "100%")
+    leafletOutput(NS(id, "map"), width = "100%")
 }
 
 #' leaflet server

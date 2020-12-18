@@ -15,8 +15,7 @@
 #'
 #' @noRd
 ranking_viz <- function(id) {
-    ns <- NS(id)
-    plotOutput(ns("ranking"))
+    plotOutput(NS(id, "ranking"))
 }
 
 #' ranking_viz_server

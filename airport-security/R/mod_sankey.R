@@ -17,8 +17,7 @@
 #'
 #' @noRd
 mod_sankey <- function(id) {
-    ns <- NS(id)
-    networkD3::sankeyNetworkOutput(ns("report_sankey"))
+    networkD3::sankeyNetworkOutput(NS(id, "sankey"), height = "600px")
 }
 
 #' mod_sankey_server
@@ -51,7 +50,7 @@ mod_sankey_server <- function(id, data, group, value) {
             sankey_data$source <- match(sankey_data[[group]], nodes$name) - 1
             sankey_data$target <- match(sankey_data[[value]], nodes$name) - 1
 
-            output$report_sankey <- networkD3::renderSankeyNetwork({
+            output$sankey <- networkD3::renderSankeyNetwork({
                 s <- networkD3::sankeyNetwork(
                     Links = sankey_data,
                     Source = "source",

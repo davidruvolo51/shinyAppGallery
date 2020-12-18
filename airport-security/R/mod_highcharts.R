@@ -15,8 +15,7 @@
 #'
 #' @noRd
 hc_column <- function(id) {
-    ns <- NS(id)
-    highchartOutput(ns("hc_column"))
+    highchartOutput(NS(id, "hc_column"))
 }
 
 #' hc_column_server
@@ -35,15 +34,13 @@ hc_column_server <- function(id, data, x, y, name, color = "#700548") {
     moduleServer(
         id,
         function(input, output, session) {
-            print(id)
-            print(head(data))
             output$hc_column <- renderHighchart({
                 highchart() %>%
                     hc_xAxis(categories = data[, x]) %>%
                     hc_yAxis(tickInterval = 5) %>%
                     hc_add_series(
                         data,
-                        hcaes(x = x, y = y),
+                        hcaes(x = .data[[x]], y = .data[[y]]),
                         type = "bar",
                         name = name,
                         color = color
@@ -72,8 +69,7 @@ hc_column_server <- function(id, data, x, y, name, color = "#700548") {
 #'
 #' @noRd
 hc_timeseries <- function(id) {
-    ns <- NS(id)
-    highchartOutput(ns("hc_timeseries"))
+    highchartOutput(NS(id, "hc_timeseries"))
 }
 
 #' hc_timeseries_server

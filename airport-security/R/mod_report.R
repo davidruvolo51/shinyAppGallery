@@ -2,7 +2,7 @@
 #' FILE: mod_report_title.R
 #' AUTHOR: David Ruvolo
 #' CREATED: 2020-12-07
-#' MODIFIED: 2020-12-12
+#' MODIFIED: 2020-12-18
 #' PURPOSE: generate report title
 #' STATUS: in.progress
 #' PACKAGES: NA
@@ -18,8 +18,7 @@
 #'
 #' @noRd
 report_office_title <- function(id) {
-    ns <- NS(id)
-    tags$h2(id = ns("report-title"))
+    tags$h2(id = NS(id, "report-title"))
 }
 
 #' mod_report_server
@@ -49,8 +48,7 @@ report_office_title_server <- function(id, structure, title) {
 #'
 #' @noRd
 report_office_summary <- function(id) {
-    ns <- NS(id)
-    tags$p(id = ns("field-office-summary"), class = "fo-summary")
+    tags$p(id = NS(id, "field-office-summary"), class = "fo-summary")
 }
 
 #' report_office_summary_server
@@ -87,10 +85,7 @@ report_office_summary_server <- function(id, city, state, code, lat, lng) {
 #'
 #' @noRd
 report_office_table <- function(id) {
-    ns <- NS(id)
-    tagList(
-        uiOutput(ns("dt"))
-    )
+    uiOutput(NS(id, "dt"))
 }
 
 
@@ -148,14 +143,11 @@ report_office_table_server <- function(id, data) {
             })
 
             # render table
-            observe({
-                browsertools::inner_html(
-                    elem = paste0("#", id, "-dt"),
-                    content = datatable(
-                        data = d(),
-                        caption = "Summary of Allegations",
-                        classnames = "field-office-table"
-                    )
+            output$dt <- renderUI({
+                datatable(
+                    data = d(),
+                    caption = "Summary of Allegations",
+                    classnames = "field-office-table"
                 )
             })
         }

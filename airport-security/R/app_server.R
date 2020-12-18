@@ -13,7 +13,6 @@ app_server <- function(input, output, session) {
     tsa_sum <- golem::get_golem_options("tsa_sum")
     tsa_sum_yr <- golem::get_golem_options("tsa_sum_yr")
 
-    # init vals
     map_click <- mod_leaflet_server(id = "airport_map", data = tsa_sum)
 
     selection_df <- reactive({
@@ -25,34 +24,33 @@ app_server <- function(input, output, session) {
                 filter(Field.Office == map_click()$id)
         }
     })
-    # observe({
-    #     print(selection_df() %>% head())
-    # })
 
-    #'/////////////////////////////////////////////////////////////////////////
+    #'//////////////////////////////////////
     #' ObserveEvent for Button Click
     observeEvent(input$moreInfo, {
-        browsertools::show_elem(elem = "#report")
+        browsertools::remove_css("#report", "visually-hidden")
 
         # get summary data
-        info <- tsa_sum[
-            tsa_sum$codes == unique(selection_df()$Field.Office),
-        ]
-        report_office_title_server(id = "fo-title", title = info$names)
+        info <- reactive({
+            tsa_sum %>%
+                filter(codes == unique(selection_df()$Field.Office))
+        })
+        report_office_title_server(id = "fo-title", title = info()$names)
         report_office_summary_server(
             id = "fo-meta",
-            city = info$city,
-            state = info$state,
-            code = info$codes,
-            lat = info$lat,
-            lng = info$lng
+            city = info()$city,
+            state = info()$state,
+            code = info()$codes,
+            lat = info()$lat,
+            lng = info()$lng
         )
         report_office_table_server(id = "fo-table", data = selection_df())
 
         #'////////////////////////////////////////
         # create a summary of violations the selected object
-        selection_df_sum <- reactive({
+        allegations_df <- reactive({
             selection_df() %>%
+                ungroup() %>%
                 group_by(Field.Office, Allegation) %>%
                 summarize(count = n()) %>%
                 ungroup() %>%
@@ -64,7 +62,6 @@ app_server <- function(input, output, session) {
 
         })
 
-        #'////////////////////////////////////////
         # create a summary of dispositions based on the selected object
         dispositions_df <- reactive({
             selection_df() %>%
@@ -83,22 +80,22 @@ app_server <- function(input, output, session) {
         ranking_viz_server(
             id = "fo-ranking",
             data = tsa_sum,
-            fo_id = info$codes
+            fo_id = info()$codes
         )
 
         #'////////////////////////////////////////
         # Top 10 Allegations Chart
         selection_top_allegations <- reactive({
-            selection_df_sum() %>%
+            allegations_df() %>%
                 top_n(10) %>%
                 arrange(-count)
         })
 
         hc_column_server(
-            id = "fo-allegations-column",
-            data = selection_top_allegations,
-            x = Allegation,
-            y = count,
+            id = "fo_allegations",
+            data = selection_top_allegations(),
+            x = "Allegation",
+            y = "count",
             name = "Allegations",
             color = "#700548"
         )
@@ -106,15 +103,15 @@ app_server <- function(input, output, session) {
         #'////////////////////////////////////////
         # Top 10 Resolutions Chart
         selection_top_resolutions <- reactive({
-            selection_df_sum() %>%
+            dispositions_df() %>%
                 arrange(-count) %>%
                 top_n(10)
         })
         hc_column_server(
-            id = "fo-resolutions-column",
-            data = selection_top_resolutions,
-            x = Final.Disposition,
-            y = count,
+            id = "fo_resolutions",
+            data = selection_top_resolutions(),
+            x = "Final.Disposition",
+            y = "count",
             name = "Resolutions",
             color = "#449DD1"
         )
@@ -122,24 +119,30 @@ app_server <- function(input, output, session) {
         #'////////////////////////////////////////
         # Allegations over time compared with all Field Offices
         # summary by POSIXct year
-        select_year_sum <- selection_df() %>%
-            group_by(date = paste0(Year.Cased.Opened, "-01", "-01")) %>%
-            summarize(count = n())
+        select_year_sum <- reactive({
+            selection_df() %>%
+                mutate(date = paste0(Year.Cased.Opened, "-01", "-01")) %>%
+                group_by(date) %>%
+                summarize(count = n()) %>%
+                ungroup()
+        })
 
-        # filter tsaYRS df for years that match selected data
-        # not all field offices have records for all years
-        tsa_subset <- tsa_sum_yr %>%
-            filter(
-                date >= min(select_year_sum$date),
-                date <= max(select_year_sum$date)
-            )
+        # # filter tsaYRS df for years that match selected data
+        # # not all field offices have records for all years
+        tsa_subset <- reactive({
+            tsa_sum_yr %>%
+                filter(
+                    date >= min(select_year_sum$date),
+                    date <= max(select_year_sum$date)
+                )
+        })
 
         hc_timeseries_server(
             id = "fo-allegations-time",
-            data = select_year_sum,
+            data = select_year_sum(),
             x = "date",
             y = "count",
-            bg_data = tsa_subset,
+            bg_data = tsa_subset(),
             bg_yvar = "avg"
         )
 
