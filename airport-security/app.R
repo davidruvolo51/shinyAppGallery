@@ -24,7 +24,7 @@
 suppressPackageStartupMessages(library(shiny))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(highcharter))
-suppressPackageStartupMessages(library(ggplot2))
+# suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(leaflet))
 
 #' start app

@@ -18,10 +18,12 @@ app_server <- function(input, output, session) {
     selection_df <- reactive({
         if (is.null(map_click())) {
             tsa %>%
-                filter(Field.Office == "DEN")
+                filter(Field.Office == "DEN") %>%
+                ungroup()
         } else {
             tsa %>%
-                filter(Field.Office == map_click()$id)
+                filter(Field.Office == map_click()$id) %>%
+                ungroup()
         }
     })
 
@@ -53,12 +55,12 @@ app_server <- function(input, output, session) {
                 ungroup() %>%
                 group_by(Field.Office, Allegation) %>%
                 summarize(count = n()) %>%
-                ungroup() %>%
                 mutate(
                     rate = sapply(count, function(x) {
                         round(x / sum(count), 5) * 100
                     })
-                )
+                ) %>%
+                ungroup()
 
         })
 
@@ -67,12 +69,12 @@ app_server <- function(input, output, session) {
             selection_df() %>%
                 group_by(Field.Office, Final.Disposition) %>%
                 summarize(count = n()) %>%
-                ungroup() %>%
                 mutate(
                     rate = sapply(count, function(x) {
                         round(x / sum(count), 5) * 100
                     })
-                )
+                ) %>%
+                ungroup()
         })
 
         #'////////////////////////////////////////
@@ -91,7 +93,7 @@ app_server <- function(input, output, session) {
                 arrange(-count)
         })
 
-        hc_column_server(
+        hc_bar_server(
             id = "fo_allegations",
             data = selection_top_allegations(),
             x = "Allegation",
@@ -107,7 +109,8 @@ app_server <- function(input, output, session) {
                 arrange(-count) %>%
                 top_n(10)
         })
-        hc_column_server(
+
+        hc_bar_server(
             id = "fo_resolutions",
             data = selection_top_resolutions(),
             x = "Final.Disposition",
@@ -132,8 +135,8 @@ app_server <- function(input, output, session) {
         tsa_subset <- reactive({
             tsa_sum_yr %>%
                 filter(
-                    date >= min(select_year_sum$date),
-                    date <= max(select_year_sum$date)
+                    date >= min(select_year_sum()$date),
+                    date <= max(select_year_sum()$date)
                 )
         })
 
