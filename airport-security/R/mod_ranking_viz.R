@@ -2,7 +2,7 @@
 #' FILE: mod_ranking_viz.R
 #' AUTHOR: David Ruvolo
 #' CREATED: 2020-12-09
-#' MODIFIED: 2020-12-12
+#' MODIFIED: 2020-12-19
 #' PURPOSE: Ggplot2 ranked viz
 #' STATUS: in.progress
 #' PACKAGES: ggplot2
@@ -15,7 +15,7 @@
 #'
 #' @noRd
 ranking_viz <- function(id) {
-    plotOutput(NS(id, "ranking"))
+    highchartOutput(NS(id, "ranking"))
 }
 
 #' ranking_viz_server
@@ -27,45 +27,44 @@ ranking_viz <- function(id) {
 #' @noRd
 ranking_viz_server <- function(id, data, fo_id) {
     moduleServer(id, function(input, output, session) {
-        d <- reactive({
+        dat <- reactive({
             data %>%
                 arrange(tot.cases) %>%
                 mutate(
                     codes = factor(codes, codes),
-                    color = case_when(
+                    group = case_when(
                         codes == fo_id ~ "target",
                         TRUE ~ "default"
+                    ),
+                    fill = case_when(
+                        group == "target" ~ "#700548",
+                        TRUE ~ "#857a74"
                     )
                 ) %>%
                 ungroup()
         })
 
-        output$ranking <- renderPlot({
-            ggplot(data = d(), aes(x = codes, y = tot.cases, fill = color)) +
-            geom_bar(stat = "identity") +
-            scale_fill_manual(
-                values = c(target = "#700548", default = "#857a74")
-            ) +
-            scale_y_continuous(
-                breaks = seq(0, max(d()$tot.cases), by = 50),
-                expand = c(0.01, 0)
-            ) +
-            xlab(NULL) + ylab("Count") +
-            theme(
-                legend.position = "none",
-                panel.background = element_blank(),
-                axis.line.x = element_line(color = "#525252", size = .5),
-                axis.line.y = element_line(color = "#525252", size = .5),
-                panel.grid.major = element_line(color = "#bdbdbd", size = 0.15),
-                panel.grid.minor = element_blank(),
-                axis.ticks = element_line(color = "#bdbdbd", size = 0.15),
-                axis.title = element_text(
-                    color = "#525252",
-                    size = 14,
-                    margin = margin(r = 10, unit = "pt")
-                ),
-                axis.text = element_text(size = 11, color = "#525252")
-            )
+        output$ranking <- renderHighchart({
+            highchart() %>%
+                hc_xAxis(categories = unique(dat()$codes)) %>%
+                hc_yAxis(tickInterval = 50) %>%
+                hc_add_series(
+                    data = dat(),
+                    hcaes(x = codes, y = tot.cases, color = fill),
+                    type = "column"
+                ) %>%
+                hc_tooltip(
+                    crosshairs = TRUE,
+                    shared = FALSE,
+                    headerFormat = "{point.x}<br>",
+                    pointFormat = "Count: {point.y}",
+                    shadow = TRUE,
+                    backgroundColor = "white",
+                    padding = 12,
+                    borderWidth = 1.5,
+                    borderRadius = 10
+                ) %>%
+                hc_legend(enabled = FALSE)
         })
     })
 }
